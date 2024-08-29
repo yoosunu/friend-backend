@@ -30,10 +30,19 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+THIRD_PARTY_APPS = [
+    "rest_framework",
+]
+
 CUSTOM_APPS = [
-    "users.apps.UsersConfig",
-    "friend.apps.FriendConfig",
     "common.apps.CommonConfig",
+    "chats.apps.ChatsConfig",
+    "users.apps.UsersConfig",
+    "items.apps.ItemsConfig",
+    "wishlists.apps.WishlistsConfig",
+    "category.apps.CategoryConfig",
+    "reviews.apps.ReviewsConfig",
+    "medias.apps.MediasConfig",
 ]
 
 SYSTEM_APPS = [
@@ -45,7 +54,7 @@ SYSTEM_APPS = [
     "django.contrib.staticfiles",
 ]
 
-INSTALLED_APPS = SYSTEM_APPS + CUSTOM_APPS
+INSTALLED_APPS = SYSTEM_APPS + THIRD_PARTY_APPS + CUSTOM_APPS
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -129,3 +138,19 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# AUTH
+
+AUTH_USER_MODEL = "users.User"
+
+MEDIA_ROOT = "uploads"
+
+MEDIA_URL = "user_uploads/"
+PAGE_SIZE = 3
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.SessionAuthentication",
+        "config.authentication.UsernameAuthentication",
+    ]
+}

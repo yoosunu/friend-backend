@@ -16,10 +16,18 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path
-from friend.views import say_hello
+from django.urls import path, include
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("friend/", say_hello),
-]
+    path("api/v1/chats/", include("chats.urls")),
+    path("api/v1/items/", include("items.urls")),
+    path("api/v1/wishlists/", include("wishlists.urls")),
+    path("api/v1/medias/", include("medias.urls")),
+    path("api/v1/users/", include("users.urls")),
+] + static(
+    settings.MEDIA_URL,
+    document_root=settings.MEDIA_ROOT,
+)

@@ -12,6 +12,8 @@ django = "^5.0.7"
 torch = "^2.4.0"
 transformers = "^4.43.2"
 datasets = "^2.20.0"
+pillow = "^10.4.0"
+djangorestframework = "^3.15.2"
 
 
 [build-system]
