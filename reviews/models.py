@@ -6,6 +6,8 @@ from common.models import CommonModel
 class Review(CommonModel):
     review = models.TextField()
 
+    rating = models.PositiveIntegerField()
+
     user = models.ForeignKey(
         "users.User",
         on_delete=models.CASCADE,
@@ -17,11 +19,6 @@ class Review(CommonModel):
         "items.Item",
         on_delete=models.CASCADE,
         related_name="reviews",
-    )
-
-    rating = models.PositiveIntegerField(
-        null=True,
-        # max_value should be included.
     )
 
     def __str__(self) -> str:

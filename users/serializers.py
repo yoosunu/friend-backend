@@ -11,6 +11,16 @@ class TinyUserSerializer(ModelSerializer):
         )
 
 
+class ClassicUserSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        fields = (
+            "id",
+            "profile_image",
+            "name",
+        )
+
+
 class PrivateUserSerializer(ModelSerializer):
     class Meta:
         model = User

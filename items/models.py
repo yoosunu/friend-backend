@@ -14,6 +14,7 @@ class Item(CommonModel):
         JS = ("javascript", "Javascript")
         DART = ("dart", "Dart")
         JAVA = ("java", "Java")
+        ETC = ("etc", "Etc")
 
     title = models.CharField(
         max_length=50,
@@ -53,7 +54,32 @@ class Item(CommonModel):
     tags = models.ManyToManyField(
         "items.Tag",
         related_name="items",
+        null=True,
     )
+
+    tips_payload = models.TextField(
+        null=True,
+        blank=True,
+    )
+
+    tips_highlight = models.CharField(
+        max_length=150,
+        null=True,
+        blank=True,
+    )
+
+    rules_payload = models.TextField(
+        null=True,
+        blank=True,
+    )
+
+    rules_highlight = models.CharField(
+        max_length=150,
+        null=True,
+        blank=True,
+    )
+
+    is_liked = models.BooleanField(default=False, blank=True,)
 
     def __str__(self) -> str:
         return self.title
@@ -67,7 +93,7 @@ class Item(CommonModel):
             total_rating += review.rating
 
         if reviews_count == 0:
-            return "No Reviews"
+            return 0
         else:
             return round(total_rating / reviews_count, 1)
 

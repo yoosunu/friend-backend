@@ -23,10 +23,23 @@ class ChatRoom(CommonModel):
     )
 
     def __str__(self) -> str:
-        return self.name
+        if self.name != None:
+            return self.name
+        else:
+            return "No Name"
 
     def people(self):
         return [user.username for user in self.users.all()]
+
+    def hmp(self):
+        return len(self.users.all())
+
+    def last_chat(self):
+        real_chats = []
+        all_chats = Chat.objects.filter(chat_room=self)
+        for chat in all_chats:
+            real_chats.append(chat.chat)
+        return real_chats[-1:]
 
 
 class Chat(CommonModel):
@@ -54,3 +67,6 @@ class Chat(CommonModel):
 
     def __str__(self) -> str:
         return f"[{self.user}] says: {self.chat}"
+
+    def people(self):
+        return self.chat_room.people()

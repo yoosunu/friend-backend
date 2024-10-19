@@ -9,6 +9,7 @@ class UserAdmin(admin.ModelAdmin):
         "username",
         "name",
         "email",
+        "profile_image",
         "is_host",
         "gender",
         "language",

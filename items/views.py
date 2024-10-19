@@ -1,7 +1,5 @@
 from django.conf import settings
-from django.shortcuts import render
 from django.db import transaction
-from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.exceptions import (
@@ -11,12 +9,13 @@ from rest_framework.exceptions import (
 )
 from rest_framework.status import HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST
 from rest_framework.views import APIView
-from .models import Item, Tag
+from .models import Item, Tag, Review
 from category.models import Category
 from .serializers import (
     ItemListSerializer,
     ItemDetailSerializer,
     TagSerializer,
+    ItemDetailSerializerForPut,
 )
 from reviews.serializers import ReviewSerializer
 from medias.serializers import PhotoSerializer
@@ -95,7 +94,7 @@ class ItemDetail(APIView):
         item = self.get_object(pk)
         if item.user != request.user:
             raise PermissionDenied
-        serializer = ItemDetailSerializer(
+        serializer = ItemDetailSerializerForPut(
             item,
             data=request.data,
             partial=True,
@@ -103,7 +102,7 @@ class ItemDetail(APIView):
         if serializer.is_valid():
             with transaction.atomic():
                 updated_item = serializer.save()
-                serializer = ItemDetailSerializer(
+                serializer = ItemDetailSerializerForPut(
                     updated_item,
                     context={
                         "request": request,
@@ -117,7 +116,7 @@ class ItemDetail(APIView):
         item = Item.objects.get(pk=pk)
         if item.user != request.user:
             raise PermissionDenied
-        self.get_object(pk).delete()
+        item.delete()
         return Response(status=HTTP_204_NO_CONTENT)
 
 
@@ -143,20 +142,71 @@ class ItemReviews(APIView):
         serializer = ReviewSerializer(
             item.reviews.all()[start:end],
             many=True,
+            context={"request": request},
         )
         return Response(serializer.data)
 
     def post(self, request, pk):
-        serializer = ReviewSerializer(data=request.data)
+        serializer = ReviewSerializer(
+            data=request.data,
+            context={"request": request},
+        )
         if serializer.is_valid():
             new_review = serializer.save(
                 user=request.user,
                 item=self.get_object(pk),
             )
-            serializer = ReviewSerializer(new_review)
+            serializer = ReviewSerializer(
+                new_review,         
+                context={"request": request},
+            )
             return Response(serializer.data)
         else:
-            raise ParseError
+            raise ParseError("Rating is required.")
+
+
+class ItemReviewDetail(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_object(self, review_pk):
+        try:
+            return Review.objects.get(pk=review_pk)
+        except Review.DoesNotExist:
+            raise NotFound
+
+    def get(self, request, pk, review_pk):
+        review = self.get_object(review_pk)
+        serializer = ReviewSerializer(
+            review,
+            context={"request": request},
+        )
+        return Response(serializer.data)
+
+    def put(self, request, pk, review_pk):
+        review = self.get_object(review_pk)
+        if review.user != request.user:
+            raise PermissionDenied
+        serializer = ReviewSerializer(
+            review,
+            data=request.data,
+            partial=True,
+        )
+        if serializer.is_valid():
+            updated_review = serializer.save()
+            serializer = ReviewSerializer(
+                updated_review,
+                context={"request": request},
+            )
+            return Response(serializer.data)
+        else:
+            raise Response(serializer.errors)
+
+    def delete(self, request, pk, review_pk):
+        review = self.get_object(review_pk)
+        if review.user != request.user:
+            raise PermissionDenied
+        review.delete()
+        return Response(HTTP_204_NO_CONTENT)
 
 
 class ItemPhotos(APIView):

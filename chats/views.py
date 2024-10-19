@@ -1,6 +1,7 @@
 from django.db import transaction
 from .models import Chat, ChatRoom
 from .serializers import (
+    ChatDetailSerializer,
     ChatSerializer,
     ChatRoomsSerializer,
     ChatRoomDetailSerializer,
@@ -19,24 +20,6 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 
 # Create your views here.
-class ChatsByChatRoom(APIView):
-    permission_classes = [IsAuthenticatedOrReadOnly]
-
-    def get_object(self, name):
-        try:
-            chatroom = ChatRoom.objects.get(name=name)
-            chats = Chat.objects.filter(chat_room=chatroom)
-            return chats
-        except ChatRoom.DoesNotExist or Chat.DoesNotExist:
-            raise NotFound
-
-    def get(self, request, name):
-        chats = self.get_object(name)
-        serializer = ChatSerializer(
-            chats,
-            many=True,
-        )
-        return Response(serializer.data)
 
 
 class ChatRooms(APIView):
@@ -73,6 +56,54 @@ class ChatRooms(APIView):
             return Response(serializer.errors)
 
 
+# used real
+class ChatsByChatRoom(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_chat_room(self, name):
+        try:
+            chatroom = ChatRoom.objects.get(name=name)
+            return chatroom
+        except ChatRoom.DoesNotExist or Chat.DoesNotExist:
+            raise NotFound
+
+    def get_object(self, name):
+        try:
+            chatroom = ChatRoom.objects.get(name=name)
+            chats = Chat.objects.filter(chat_room=chatroom)
+            return chats
+        except Chat.DoesNotExist or Chat.DoesNotExist:
+            raise NotFound
+
+    def get(self, request, name):
+        chats = self.get_object(name)
+        serializer = ChatDetailSerializer(
+            chats,
+            many=True,
+        )
+        return Response(serializer.data)
+
+    def post(self, request, name):
+        serializer = ChatDetailSerializer(data=request.data)
+        if serializer.is_valid():
+            new_chat = serializer.save(
+                user=request.user,
+                chat_room=self.get_chat_room(name),
+            )
+            serializer = ChatDetailSerializer(new_chat)
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors)
+        
+    def delete(self, request, name):
+        chat_room = self.get_chat_room(name)
+        if chat_room.owner == request.user:
+            chat_room.delete()
+            return Response(status=HTTP_204_NO_CONTENT)
+        raise PermissionDenied
+         
+
+#don't use real
 class ChatRoomDetail(APIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
 

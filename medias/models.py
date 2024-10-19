@@ -4,7 +4,10 @@ from common.models import CommonModel
 
 # Create your models here.
 class Photo(CommonModel):
-    file = models.URLField()
+    file = models.ImageField(
+        blank=True,
+        null=True,
+    )
     description = models.CharField(
         max_length=150,
         null=True,
@@ -25,7 +28,10 @@ class Photo(CommonModel):
 
 class Video(CommonModel):
 
-    file = models.URLField()
+    file = models.FileField(
+        blank=True,
+        null=True,
+    )
     description = models.CharField(
         max_length=150,
         null=True,

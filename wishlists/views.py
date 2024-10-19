@@ -12,7 +12,7 @@ from items.models import Item
 
 # Create your views here.
 class wishlists(APIView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     def get(self, request):
         wishs = Wishlist.objects.filter(user=request.user)
