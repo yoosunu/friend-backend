@@ -8,6 +8,7 @@ class EverydaySerializer(ModelSerializer):
     class Meta:
         model = Everyday
         fields = (
+            "id",
             "name",
             "time",
             "done",
@@ -19,6 +20,7 @@ class PlanSerializer(ModelSerializer):
     class Meta:
         model = Plan
         fields = (
+            "id",
             "name",
             "time",
             "description",
@@ -32,12 +34,17 @@ class TodoSerializer(ModelSerializer):
     )
     everydays = EverydaySerializer(
         many=True,
+        required=False,
     )
 
     plans = PlanSerializer(
         many=True,
+        required=False,
     )
 
     class Meta:
         model = Todo
-        fields = "__all__"
+        exclude = (
+            "created_at",
+            "updated_at",
+        )

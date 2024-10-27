@@ -7,7 +7,7 @@ class TinyThanksDateSerializer(ModelSerializer):
 
     class Meta:
         model = ThanksDate
-        fields = ("preview",)
+        fields = ("id", "preview", "created_at",)
 
 
 class ThanksDateSerializer(ModelSerializer):

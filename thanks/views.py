@@ -3,7 +3,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.exceptions import NotFound, PermissionDenied
 from rest_framework.status import HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST
-from .models import ThanksDate
+from .models import ThanksDate, Thank
 from .serializers import ThanksDateSerializer, ThanksSerializer
 
 
@@ -105,3 +105,42 @@ class Tks(APIView):
 
         else:
             return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+
+
+class Tk(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self, pk_):
+        try:
+            tk = Thank.objects.get(pk=pk_)
+            return tk
+        except Thank.DoesNotExist:
+            raise NotFound
+
+    def get(self, request, pk, pk_):
+        tk = self.get_object(pk_)
+        serializer = ThanksSerializer(tk)
+        return Response(serializer.data)
+
+    def put(self, request, pk, pk_):
+        tk = self.get_object(pk_)
+        if tk.user != request.user:
+            raise PermissionDenied
+        serializer = ThanksSerializer(
+            tk,
+            request.data,
+            partial=True,
+        )
+        if serializer.is_valid():
+            new_tk = serializer.save()
+            serializer = ThanksSerializer(new_tk)
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors)
+
+    def delete(self, request, pk, pk_):
+        tk = self.get_object(pk_)
+        if tk.user != request.user:
+            raise PermissionDenied
+        tk.delete()
+        return Response(status=HTTP_204_NO_CONTENT)

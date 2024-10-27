@@ -82,7 +82,7 @@ class Plan(CommonModel):
         blank=True,
     )
 
-    time = models.DateTimeField(
+    time = models.DateField(
         blank=True,
         null=True,
     )

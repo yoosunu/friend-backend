@@ -3,7 +3,7 @@ from .models import Todo, Everyday, Plan
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.exceptions import NotFound, ParseError, PermissionDenied
+from rest_framework.exceptions import NotFound, PermissionDenied
 from rest_framework.status import HTTP_204_NO_CONTENT
 
 
@@ -15,10 +15,7 @@ class Todos(APIView):
 
     def get(self, request):
         try:
-            if not request.user.is_authenticated:
-                return Response(None)
             todos = Todo.objects.filter(user=request.user)
-            
             serializer = TodoSerializer(
                 todos,
                 many=True,
@@ -144,17 +141,16 @@ class Plans(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, pk):
-            try:
-                todo = Todo.objects.get(pk=pk)
-                plans = Plan.objects.filter(todo=todo)
-                serializer = PlanSerializer(
-                    plans,
-                    many=True,
-                )
-                return Response(serializer.data)
-            except Plan.DoesNotExist:
-                raise NotFound
-       
+        try:
+            todo = Todo.objects.get(pk=pk)
+            plans = Plan.objects.filter(todo=todo)
+            serializer = PlanSerializer(
+                plans,
+                many=True,
+            )
+            return Response(serializer.data)
+        except Plan.DoesNotExist:
+            raise NotFound
 
     def post(self, request, pk):
         todo = Todo.objects.get(pk=pk)
