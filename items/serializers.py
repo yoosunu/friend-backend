@@ -29,15 +29,16 @@ class ItemListSerializer(ModelSerializer):
         many=True,
         read_only=True,
     )
+    is_wished = SerializerMethodField()
 
     def get_rating(self, item):
-        return item.rating_average()
+        return item.rating_average() 
 
     def get_is_owner(self, item):
         request = self.context["request"]
         return item.user == request.user
 
-    def get_is_liked(self, item):
+    def get_is_wished(self, item):
         request = self.context["request"]
         if request:
             if request.user.is_authenticated:

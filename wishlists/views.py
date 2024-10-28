@@ -64,7 +64,8 @@ class wishlistDetail(APIView):
         )
         if serializer.is_valid():
             updated_wish = serializer.save()
-            return Response(WishlistSerializer(updated_wish).data)
+            serializer = WishlistSerializer(updated_wish)
+            return Response(serializer.data)
         else:
             return Response(serializer.errors)
 
@@ -74,7 +75,7 @@ class wishlistDetail(APIView):
         return Response(status=HTTP_204_NO_CONTENT)
 
 
-class wishlistItem(APIView):
+class addItem(APIView):
     def get_wishs(self, pk, user):
         try:
             return Wishlist.objects.get(pk=pk, user=user)

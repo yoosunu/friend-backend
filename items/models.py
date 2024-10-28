@@ -79,8 +79,6 @@ class Item(CommonModel):
         blank=True,
     )
 
-    is_liked = models.BooleanField(default=False, blank=True,)
-
     def __str__(self) -> str:
         return self.title
 
