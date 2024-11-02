@@ -15,6 +15,7 @@ import os
 import environ
 from celery.schedules import crontab
 import dj_database_url
+import sentry_sdk
 
 
 env = environ.Env()
@@ -33,7 +34,9 @@ SECRET_KEY = env("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = "RENDER" not in os.environ
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "localhost",
+]
 
 RENDER_EXTERNAL_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
 if RENDER_EXTERNAL_HOSTNAME:
@@ -189,12 +192,16 @@ REST_FRAMEWORK = {
     ]
 }
 
-CORS_ALLOWED_ORIGINS = ["http://127.0.0.1:3000"]
+if DEBUG:
+
+    CORS_ALLOWED_ORIGINS = ["http://127.0.0.1:3000"]
+    CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:3000"]
+else:
+
+    CORS_ALLOWED_ORIGINS = ["https://apotf.onrender.com"]
+    CSRF_TRUSTED_ORIGINS = ["https://apotf.onrender.com"]
 
 CORS_ALLOW_CREDENTIALS = True
-
-CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:3000"]
-
 GH_SECRET = env("GH_SECRET")
 
 # Celery section
@@ -252,3 +259,12 @@ CELERY_BEAT_SCHEDULE = {
 # EMAIL_USE_TLS = True
 # EMAIL_HOST_USER = "yoosunu010@gmail.com"  # Gmail 계정
 # EMAIL_HOST_PASSWORD = "sbma cxgp hiae djrp"
+
+if not DEBUG:
+    sentry_sdk.init(
+        dsn="https://74c2911976b70c2bea321e15a39949e8@o4508229791580160.ingest.de.sentry.io/4508229806522448",
+        traces_sample_rate=1.0,
+        _experiments={
+            "continuous_profiling_auto_start": True,
+        },
+    )
