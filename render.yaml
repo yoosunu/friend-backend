@@ -1,14 +1,14 @@
 databases:
-  - name: Apot
+  - name: apotdb
     plan: free
-    databaseName: Apot
-    user: Apot
+    databaseName: apot
+    user: apot
     region: singapore
 
 services:
   - type: web
     plan: free
-    name: Apot
+    name: apot
     runtime: python
     region: singapore
     buildCommand: "./build.sh"
@@ -16,7 +16,7 @@ services:
     envVars:
       - key: DATABASE_URL
         fromDatabase:
-          name: Apot
+          name: apotdb
           property: connectionString
       - key: SECRET_KEY
         generateValue: true
