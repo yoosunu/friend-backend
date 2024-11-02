@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 import os
 import environ
+from celery.schedules import crontab
 
 env = environ.Env()
 
@@ -39,6 +40,8 @@ THIRD_PARTY_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "corsheaders",
+    "django_celery_results",
+    "django_celery_beat",
 ]
 
 CUSTOM_APPS = [
@@ -52,6 +55,7 @@ CUSTOM_APPS = [
     "medias.apps.MediasConfig",
     "thanks.apps.ThanksConfig",
     "todos.apps.TodosConfig",
+    "notifications.apps.NotificationsConfig",
 ]
 
 SYSTEM_APPS = [
@@ -132,7 +136,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+# TIME_ZONE = "UTC"
+TIME_ZONE = "Asia/Seoul"  # 한국 표준시로 설정
 
 USE_I18N = True
 
@@ -173,3 +178,59 @@ CORS_ALLOW_CREDENTIALS = True
 CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:3000"]
 
 GH_SECRET = env("GH_SECRET")
+
+# Celery section
+
+CELERY_BROKER_URL = "redis://localhost:6379/0"
+# CELERY_RESULT_BACKEND = "redis://localhost:6379/0"
+# CELERY_BROKER_URL = "redis://127.0.0.1:6379"
+CELERY_ACCEPT_CONTENT = ["application/json"]
+CELERY_RESULT_SERIALIZER = "json"
+CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_BACKEND = "django-db"
+CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
+CELERY_TIMEZONE = "Asia/Seoul"
+
+
+# REDIS CACHE
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": f"redis://127.0.0.1:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
+    }
+}
+
+CELERY_BEAT_SCHEDULE = {
+    "create_notifications_task_morning": {
+        "task": "notifications.task.create_notifications_task",
+        "schedule": crontab(hour=8, minute=30),
+    },
+    "create_notifications_task_day": {
+        "task": "notifications.task.create_notifications_task",
+        "schedule": crontab(hour=10, minute=30),
+    },
+    "create_notifications_task_afternoon": {
+        "task": "notifications.task.create_notifications_task",
+        "schedule": crontab(hour=13, minute=30),
+    },
+    "create_notifications_task_evening": {
+        "task": "notifications.task.create_notifications_task",
+        "schedule": crontab(hour=17, minute=30),
+    },
+    "create_notifications_task_night": {
+        "task": "notifications.task.create_notifications_task",
+        "schedule": crontab(hour=21, minute=00),
+    },
+}
+
+
+# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+# EMAIL_HOST = "smtp.gmail.com"
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = "yoosunu010@gmail.com"  # Gmail 계정
+# EMAIL_HOST_PASSWORD = "sbma cxgp hiae djrp"

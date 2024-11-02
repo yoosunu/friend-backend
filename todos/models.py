@@ -1,7 +1,6 @@
 from django.db import models
 from common.models import CommonModel
 
-
 # Create your models here.
 
 
@@ -78,7 +77,7 @@ class Plan(CommonModel):
     )
 
     description = models.TextField(
-        null=True, 
+        null=True,
         blank=True,
     )
 

@@ -30,6 +30,7 @@ urlpatterns = [
     path("api/v1/thanks/", include("thanks.urls")),
     path("api/v1/todos/", include("todos.urls")),
     path("api/v1/categories/", include("category.urls")),
+    path("api/v1/notifications/", include("notifications.urls")),
 ] + static(
     settings.MEDIA_URL,
     document_root=settings.MEDIA_ROOT,
