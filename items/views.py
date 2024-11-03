@@ -20,6 +20,19 @@ from .serializers import (
 from reviews.serializers import ReviewSerializer
 from medias.serializers import PhotoSerializer
 
+from django.contrib.auth.models import User
+from django.core.management import call_command
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
+
+def create_superuser():
+    User.objects.create_superuser("yoosunu", "yoosunu010@naver.com", "yoo010212??!")
+
+
+create_superuser()
+
 # Create your views here.
 
 
@@ -157,7 +170,7 @@ class ItemReviews(APIView):
                 item=self.get_object(pk),
             )
             serializer = ReviewSerializer(
-                new_review,         
+                new_review,
                 context={"request": request},
             )
             return Response(serializer.data)
