@@ -206,7 +206,7 @@ GH_SECRET = env("GH_SECRET")
 
 # Celery section
 
-CELERY_BROKER_URL = "redis://localhost:6379/0"
+CELERY_BROKER_URL = "redis://apot.pro:6379/0"
 # CELERY_RESULT_BACKEND = "redis://localhost:6379/0"
 # CELERY_BROKER_URL = "redis://127.0.0.1:6379"
 CELERY_ACCEPT_CONTENT = ["application/json"]
@@ -222,7 +222,7 @@ CELERY_TIMEZONE = "Asia/Seoul"
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": f"redis://127.0.0.1:6379/1",
+        "LOCATION": f"redis://apot.pro:6379/1",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         },
@@ -261,6 +261,8 @@ CELERY_BEAT_SCHEDULE = {
 # EMAIL_HOST_PASSWORD = "sbma cxgp hiae djrp"
 
 if not DEBUG:
+    SESSION_COOKIE_DOMAIN = ".apot.pro"
+    CSRF_COOKIE_DOMAIN = ".apot.pro"
     sentry_sdk.init(
         dsn="https://74c2911976b70c2bea321e15a39949e8@o4508229791580160.ingest.de.sentry.io/4508229806522448",
         traces_sample_rate=1.0,

@@ -8,7 +8,7 @@ databases:
 services:
   - type: web
     plan: free
-    name: apot
+    name: apotB
     runtime: python
     region: singapore
     buildCommand: "./build.sh"
