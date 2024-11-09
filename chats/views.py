@@ -2,7 +2,6 @@ from django.db import transaction
 from .models import Chat, ChatRoom
 from .serializers import (
     ChatDetailSerializer,
-    ChatSerializer,
     ChatRoomsSerializer,
     ChatRoomDetailSerializer,
 )
@@ -94,16 +93,16 @@ class ChatsByChatRoom(APIView):
             return Response(serializer.data)
         else:
             return Response(serializer.errors)
-        
+
     def delete(self, request, name):
         chat_room = self.get_chat_room(name)
         if chat_room.owner == request.user:
             chat_room.delete()
             return Response(status=HTTP_204_NO_CONTENT)
         raise PermissionDenied
-         
 
-#don't use real
+
+# don't use real
 class ChatRoomDetail(APIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
 

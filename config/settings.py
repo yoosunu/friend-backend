@@ -36,6 +36,7 @@ DEBUG = "RENDER" not in os.environ
 
 ALLOWED_HOSTS = [
     "localhost",
+    "127.0.0.1",
     "backend.apot.pro",
 ]
 
@@ -207,15 +208,18 @@ GH_SECRET = env("GH_SECRET")
 
 # Celery section
 
-CELERY_BROKER_URL = "redis://apot.pro:6379/0"
-# CELERY_RESULT_BACKEND = "redis://localhost:6379/0"
-# CELERY_BROKER_URL = "redis://127.0.0.1:6379"
 CELERY_ACCEPT_CONTENT = ["application/json"]
 CELERY_RESULT_SERIALIZER = "json"
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_BACKEND = "django-db"
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 CELERY_TIMEZONE = "Asia/Seoul"
+
+if DEBUG:
+    CELERY_BROKER_URL = "redis://127.0.0.1:6379"
+    CELERY_RESULT_BACKEND = "redis://localhost:6379/0"
+else:
+    CELERY_BROKER_URL = "redis://apot.pro:6379/0"
 
 
 # REDIS CACHE

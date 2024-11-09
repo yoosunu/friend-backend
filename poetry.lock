@@ -563,6 +563,24 @@ prompt-toolkit = ">=3.0.36"
 testing = ["pytest (>=7.2.1)", "pytest-cov (>=4.0.0)", "tox (>=4.4.3)"]
 
 [[package]]
+name = "cloudinary"
+version = "1.41.0"
+description = "Python and Django SDK for Cloudinary"
+optional = false
+python-versions = "*"
+files = [
+    {file = "cloudinary-1.41.0.tar.gz", hash = "sha256:e189739a796a7d2ad15c19971741d33a9300816b16c0282b4b14ccf1dd2948c0"},
+]
+
+[package.dependencies]
+certifi = "*"
+six = "*"
+urllib3 = ">=1.26.5"
+
+[package.extras]
+dev = ["tox"]
+
+[[package]]
 name = "colorama"
 version = "0.4.6"
 description = "Cross-platform colored terminal text."
@@ -714,6 +732,24 @@ files = [
 [package.dependencies]
 celery = ">=5.2.7,<6.0"
 Django = ">=3.2.18"
+
+[[package]]
+name = "django-cloudinary-storage"
+version = "0.3.0"
+description = "Django package that provides Cloudinary storages for both media and static files as well as management commands for removing unnecessary files."
+optional = false
+python-versions = "*"
+files = [
+    {file = "django-cloudinary-storage-0.3.0.tar.gz", hash = "sha256:debd403a5f225c9d35c4af508ff4abc7fdc262129464134b60b2feeb2c44d3e1"},
+    {file = "django_cloudinary_storage-0.3.0-py3-none-any.whl", hash = "sha256:95c855c7334141b2a485ea7eb5716de87bb6ce0d848e205debb3a3ab7bbbd49a"},
+]
+
+[package.dependencies]
+cloudinary = ">=1.4.0"
+requests = ">=2.10.0"
+
+[package.extras]
+video = ["python-magic (>=0.4.12)"]
 
 [[package]]
 name = "django-cors-headers"
@@ -2877,4 +2913,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "cd1118c2fb69a99e57951bbddeaaa754177a66b1c765f442f508e866feee7a1c"
+content-hash = "c18c15f751d3d366cfa8c36beaeadeba0633caa263f97d3f91946a511bdd9f53"
