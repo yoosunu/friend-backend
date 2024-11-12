@@ -237,7 +237,7 @@ CACHES = {
 CELERY_BEAT_SCHEDULE = {
     "create_notifications_task_test": {
         "task": "notifications.task.create_notifications_task",
-        "schedule": crontab(hour=10, minute=50),
+        "schedule": crontab(hour=11, minute=30),
     },
     "create_notifications_task_morning": {
         "task": "notifications.task.create_notifications_task",
