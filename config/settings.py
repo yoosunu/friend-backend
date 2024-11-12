@@ -18,7 +18,9 @@ import dj_database_url
 import sentry_sdk
 
 
-env = environ.Env()
+env = environ.Env(
+    DEBUG=(bool, False),
+)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -38,6 +40,7 @@ ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
     "backend.apot.pro",
+    ".fly.dev",
 ]
 
 RENDER_EXTERNAL_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
@@ -75,6 +78,7 @@ SYSTEM_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
+    "whitenoise.runserver_nostatic",
     "django.contrib.staticfiles",
 ]
 
@@ -83,6 +87,7 @@ INSTALLED_APPS = SYSTEM_APPS + THIRD_PARTY_APPS + CUSTOM_APPS
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
+    "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -124,13 +129,15 @@ if DEBUG:
         }
     }
 else:
+    # DATABASES = {
+    #     "default": dj_database_url.config(
+    #         conn_max_age=600,
+    #     ),
+    # }
     DATABASES = {
-        "default": dj_database_url.config(
-            conn_max_age=600,
-        ),
+        # read os.environ['DATABASE_URL']
+        "default": env.db()  # <-- Updated!
     }
-
-
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
@@ -200,8 +207,14 @@ if DEBUG:
     CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:3000"]
 else:
 
-    CORS_ALLOWED_ORIGINS = ["https://apot.pro"]
-    CSRF_TRUSTED_ORIGINS = ["https://apot.pro"]
+    CORS_ALLOWED_ORIGINS = [
+        "https://apot.pro",
+        "https://*.fly.dev",
+    ]
+    CSRF_TRUSTED_ORIGINS = [
+        "https://apot.pro",
+        "https://*.fly.dev",
+    ]
 
 CORS_ALLOW_CREDENTIALS = True
 GH_SECRET = env("GH_SECRET")
