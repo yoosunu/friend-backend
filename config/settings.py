@@ -135,8 +135,11 @@ else:
     #     ),
     # }
     DATABASES = {
-        # read os.environ['DATABASE_URL']
-        "default": env.db()  # <-- Updated!
+        "default": dj_database_url.config(
+            default=env("DATABASE_URL"),
+            conn_max_age=600,
+            ssl_require=True,
+        )
     }
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
