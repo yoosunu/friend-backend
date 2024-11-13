@@ -212,11 +212,11 @@ else:
 
     CORS_ALLOWED_ORIGINS = [
         "https://apot.pro",
-        "https://*.fly.dev",
+        "https://apot-backend.fly.dev",
     ]
     CSRF_TRUSTED_ORIGINS = [
         "https://apot.pro",
-        "https://*.fly.dev",
+        "https://apot-backend.fly.dev",
     ]
 
 CORS_ALLOW_CREDENTIALS = True
