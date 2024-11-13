@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for friend-backend-cool-sea-8569 on 2024-11-13T00:59:39+09:00
+# fly.toml app configuration file generated for apot-backend on 2024-11-13T20:54:57+09:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'friend-backend-cool-sea-8569'
+app = 'apot-backend'
 primary_region = 'nrt'
 console_command = '/code/manage.py shell'
 
