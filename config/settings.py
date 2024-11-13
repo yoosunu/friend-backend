@@ -39,13 +39,13 @@ DEBUG = env("DEBUG")
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
-    "backend.apot.pro",
-    ".fly.dev",
+    "apot-backend.fly.dev",
+    "apot.pro",
 ]
 
-RENDER_EXTERNAL_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
-if RENDER_EXTERNAL_HOSTNAME:
-    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+# RENDER_EXTERNAL_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
+# if RENDER_EXTERNAL_HOSTNAME:
+#     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 
 # Application definition
@@ -205,16 +205,10 @@ REST_FRAMEWORK = {
 }
 
 if DEBUG:
-
     CORS_ALLOWED_ORIGINS = ["http://127.0.0.1:3000"]
     CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:3000"]
 else:
-
     CORS_ALLOWED_ORIGINS = [
-        "https://apot.pro",
-        "https://apot-backend.fly.dev",
-    ]
-    CSRF_TRUSTED_ORIGINS = [
         "https://apot.pro",
         "https://apot-backend.fly.dev",
     ]
@@ -235,7 +229,8 @@ if DEBUG:
     CELERY_BROKER_URL = "redis://127.0.0.1:6379"
     CELERY_RESULT_BACKEND = "redis://localhost:6379/0"
 else:
-    CELERY_BROKER_URL = "redis://apot.pro:6379/0"
+    # CELERY_BROKER_URL = "redis://apot.pro:6379/0"
+    CELERY_BROKER_URL = "redis://apot-backend.fly.dev:6379/0"
 
 
 # REDIS CACHE
@@ -243,7 +238,8 @@ else:
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": f"redis://apot.pro:6379/1",
+        # "LOCATION": f"redis://apot.pro:6379/1",
+        "LOCATION": f"redis://apot-backend.fly.dev:6379/1",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         },
@@ -286,5 +282,6 @@ CELERY_BEAT_SCHEDULE = {
 # EMAIL_HOST_PASSWORD = "sbma cxgp hiae djrp"
 
 if not DEBUG:
-    SESSION_COOKIE_DOMAIN = ".apot.pro"
-    CSRF_COOKIE_DOMAIN = ".apot.pro"
+    # SESSION_COOKIE_DOMAIN = ".apot.pro"
+    SESSION_COOKIE_DOMAIN = "https://apot-backend.fly.dev"
+    CSRF_COOKIE_DOMAIN = "https://apot-backend.fly.dev"
