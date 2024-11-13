@@ -21,9 +21,9 @@ RUN poetry config virtualenvs.create false
 RUN poetry install --only main --no-root --no-interaction
 COPY . /code
 
-ENV SECRET_KEY "Smx3FYQpg0KSjoxtoSarfF659G5cCQCYjjzN0AdCjVhzrxnSEb"
+ENV SECRET_KEY "lauRoM518kJ4aWxcjtoB8S10eX84iYbKdCXPjCBZ00d3LVpNpx"
 RUN python manage.py collectstatic --noinput
 
 EXPOSE 8000
 
-CMD ["gunicorn","--bind",":8000","--workers","2","--worker-class","uvicorn.workers.UvicornWorker","config.asgi"]
+CMD ["gunicorn","--bind",":8000","--workers","2","--worker-class","uvicorn.workers.UvicornWorker","config.asgi", "config.wsgi"]
