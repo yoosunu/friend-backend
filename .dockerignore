@@ -1,3 +1,14 @@
 fly.toml
 .git/
 *.sqlite3
+.env
+__pycache__/
+*.pyc
+*.pyo
+.git/
+.gitignore
+*.log
+*.db
+staticfiles/
+.vscode/
+.idea/

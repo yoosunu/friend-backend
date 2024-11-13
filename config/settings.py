@@ -15,7 +15,6 @@ import os
 import environ
 from celery.schedules import crontab
 import dj_database_url
-import sentry_sdk
 
 
 env = environ.Env(
@@ -289,10 +288,3 @@ CELERY_BEAT_SCHEDULE = {
 if not DEBUG:
     SESSION_COOKIE_DOMAIN = ".apot.pro"
     CSRF_COOKIE_DOMAIN = ".apot.pro"
-    sentry_sdk.init(
-        dsn="https://74c2911976b70c2bea321e15a39949e8@o4508229791580160.ingest.de.sentry.io/4508229806522448",
-        traces_sample_rate=1.0,
-        _experiments={
-            "continuous_profiling_auto_start": True,
-        },
-    )
