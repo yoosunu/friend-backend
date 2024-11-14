@@ -34,7 +34,9 @@ SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = "RENDER" not in os.environ
-DEBUG = env("DEBUG")
+# DEBUG = env("DEBUG")
+DEBUG = False
+# DEBUG = True
 
 ALLOWED_HOSTS = [
     "localhost",
@@ -204,20 +206,41 @@ REST_FRAMEWORK = {
     ]
 }
 
-if DEBUG:
-    CORS_ALLOWED_ORIGINS = ["http://127.0.0.1:3000"]
-    CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:3000"]
-else:
-    CORS_ALLOWED_ORIGINS = [
-        "https://apot.pro",
-        "https://apot-backend.fly.dev",
-    ]
-    CSRF_TRUSTED_ORIGINS = [
-        "https://apot.pro",
-        "https://apot-backend.fly.dev",
-    ]
+# if DEBUG:
+#     CORS_ALLOWED_ORIGINS = ["http://127.0.0.1:3000"]
+#     CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:3000"]
+# else:
+#     CORS_ALLOWED_ORIGINS = [
+#         "https://apot.pro",
+#         "https://apot-backend.fly.dev",
+#     ]
+#     CSRF_TRUSTED_ORIGINS = [
+#         "https://apot.pro",
+#         "https://apot-backend.fly.dev",
+#     ]
+#     CSRF_COOKIE_SECURE = True
+#     SESSION_COOKIE_SECURE = True
+
+CORS_ALLOWED_ORIGINS = [
+    # "https://apot.pro",
+    "https://apot-backend.fly.dev",
+]
+CSRF_TRUSTED_ORIGINS = [
+    # "https://apot.pro",
+    "https://apot-backend.fly.dev",
+]
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+SESSION_COOKIE_DOMAIN = "apot-backend.fly.dev"
+CSRF_COOKIE_DOMAIN = "apot-backend.fly.dev"
 
 CORS_ALLOW_CREDENTIALS = True
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+CSRF_USE_SESSIONS = True
+SECURE_SSL_REDIRECT = True
+
+
 GH_SECRET = env("GH_SECRET")
 
 # Celery section
@@ -285,6 +308,6 @@ CELERY_BEAT_SCHEDULE = {
 # EMAIL_HOST_USER = "yoosunu010@gmail.com"  # Gmail 계정
 # EMAIL_HOST_PASSWORD = "sbma cxgp hiae djrp"
 
-if not DEBUG:
-    SESSION_COOKIE_DOMAIN = ".apot.pro"
-    CSRF_COOKIE_DOMAIN = ".apot.pro"
+# if not DEBUG:
+#     SESSION_COOKIE_DOMAIN = ".apot.pro"
+#     CSRF_COOKIE_DOMAIN = ".apot.pro"
