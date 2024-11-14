@@ -34,9 +34,8 @@ SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = "RENDER" not in os.environ
-# DEBUG = env("DEBUG")
-DEBUG = False
-# DEBUG = True
+DEBUG = env("DEBUG")
+
 
 ALLOWED_HOSTS = [
     "localhost",
@@ -131,16 +130,10 @@ if DEBUG:
         }
     }
 else:
-    # DATABASES = {
-    #     "default": dj_database_url.config(
-    #         conn_max_age=600,
-    #     ),
-    # }
     DATABASES = {
         "default": dj_database_url.config(
             default=env("DATABASE_URL"),
             conn_max_age=600,
-            # ssl_require=True,
         )
     }
 # Password validation
@@ -206,40 +199,22 @@ REST_FRAMEWORK = {
     ]
 }
 
-# if DEBUG:
-#     CORS_ALLOWED_ORIGINS = ["http://127.0.0.1:3000"]
-#     CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:3000"]
-# else:
-#     CORS_ALLOWED_ORIGINS = [
-#         "https://apot.pro",
-#         "https://apot-backend.fly.dev",
-#     ]
-#     CSRF_TRUSTED_ORIGINS = [
-#         "https://apot.pro",
-#         "https://apot-backend.fly.dev",
-#     ]
-#     CSRF_COOKIE_SECURE = True
-#     SESSION_COOKIE_SECURE = True
-
-CORS_ALLOWED_ORIGINS = [
-    "https://apot.pro",
-    "https://apot-backend.fly.dev",
-]
-CSRF_TRUSTED_ORIGINS = [
-    "https://apot.pro",
-    "https://apot-backend.fly.dev",
-]
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
-
-# SESSION_COOKIE_DOMAIN = "apot-backend.fly.dev"
-# CSRF_COOKIE_DOMAIN = "apot-backend.fly.dev"
+if DEBUG:
+    CORS_ALLOWED_ORIGINS = ["http://127.0.0.1:3000"]
+    CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:3000"]
+else:
+    CORS_ALLOWED_ORIGINS = [
+        "https://apot.pro",
+        "https://apot-backend.fly.dev",
+    ]
+    CSRF_TRUSTED_ORIGINS = [
+        "https://apot.pro",
+        "https://apot-backend.fly.dev",
+    ]
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
 
 CORS_ALLOW_CREDENTIALS = True
-SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-# CSRF_USE_SESSIONS = True
-# SECURE_SSL_REDIRECT = True
-
 
 GH_SECRET = env("GH_SECRET")
 
@@ -299,15 +274,3 @@ CELERY_BEAT_SCHEDULE = {
         "schedule": crontab(hour=21, minute=00),
     },
 }
-
-
-# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-# EMAIL_HOST = "smtp.gmail.com"
-# EMAIL_PORT = 587
-# EMAIL_USE_TLS = True
-# EMAIL_HOST_USER = "yoosunu010@gmail.com"  # Gmail 계정
-# EMAIL_HOST_PASSWORD = "sbma cxgp hiae djrp"
-
-# if not DEBUG:
-#     SESSION_COOKIE_DOMAIN = ".apot.pro"
-#     CSRF_COOKIE_DOMAIN = ".apot.pro"
