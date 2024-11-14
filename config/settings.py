@@ -222,23 +222,23 @@ REST_FRAMEWORK = {
 #     SESSION_COOKIE_SECURE = True
 
 CORS_ALLOWED_ORIGINS = [
-    # "https://apot.pro",
+    "https://apot.pro",
     "https://apot-backend.fly.dev",
 ]
 CSRF_TRUSTED_ORIGINS = [
-    # "https://apot.pro",
+    "https://apot.pro",
     "https://apot-backend.fly.dev",
 ]
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 
-SESSION_COOKIE_DOMAIN = "apot-backend.fly.dev"
-CSRF_COOKIE_DOMAIN = "apot-backend.fly.dev"
+# SESSION_COOKIE_DOMAIN = "apot-backend.fly.dev"
+# CSRF_COOKIE_DOMAIN = "apot-backend.fly.dev"
 
 CORS_ALLOW_CREDENTIALS = True
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-CSRF_USE_SESSIONS = True
-SECURE_SSL_REDIRECT = True
+# CSRF_USE_SESSIONS = True
+# SECURE_SSL_REDIRECT = True
 
 
 GH_SECRET = env("GH_SECRET")
