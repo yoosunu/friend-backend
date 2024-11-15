@@ -17,9 +17,7 @@ from celery.schedules import crontab
 import dj_database_url
 
 
-env = environ.Env(
-    DEBUG=(bool, False),
-)
+env = environ.Env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -33,22 +31,18 @@ environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = "RENDER" not in os.environ
-DEBUG = env("DEBUG")
+DEBUG = "RENDER" not in os.environ
 
 
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
-    "apot-backend.fly.dev",
     "apot.pro",
-    "www.apot.pro",
-    "apotf.onrender.com",
 ]
 
-# RENDER_EXTERNAL_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
-# if RENDER_EXTERNAL_HOSTNAME:
-#     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+RENDER_EXTERNAL_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 
 # Application definition
@@ -207,13 +201,11 @@ if DEBUG:
 else:
     CORS_ALLOWED_ORIGINS = [
         "https://apot.pro",
-        "https://apot-backend.fly.dev",
-        "https://apotf.onrender.com",
+        "https://backend.apot.pro",
     ]
     CSRF_TRUSTED_ORIGINS = [
         "https://apot.pro",
-        "https://apot-backend.fly.dev",
-        "https://apotf.onrender.com",
+        "https://backend.apot.pro",
     ]
 
 CSRF_COOKIE_SECURE = True
@@ -245,7 +237,7 @@ CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
         # "LOCATION": f"redis://apot.pro:6379/1",
-        "LOCATION": f"redis://apot-backend.fly.dev:6379/1",
+        "LOCATION": f"redis://apot.pro:6379/1",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         },
@@ -253,10 +245,6 @@ CACHES = {
 }
 
 CELERY_BEAT_SCHEDULE = {
-    "create_notifications_task_test": {
-        "task": "notifications.task.create_notifications_task",
-        "schedule": crontab(hour=11, minute=30),
-    },
     "create_notifications_task_morning": {
         "task": "notifications.task.create_notifications_task",
         "schedule": crontab(hour=8, minute=30),

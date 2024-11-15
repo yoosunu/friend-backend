@@ -1,12 +1,10 @@
 import requests
 from django.conf import settings
-from django.db import transaction
-from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import ParseError, NotFound
 from .serializers import (
     PrivateUserSerializer,
@@ -18,7 +16,7 @@ from .models import User
 
 # Create your views here.
 class Me(APIView):
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         user = request.user
@@ -41,6 +39,8 @@ class Me(APIView):
 
 
 class Users(APIView):
+    permission_classes = [IsAuthenticated]
+
     def get(self, request):
         users = User.objects.all()
         serializer = ClassicUserSerializer(
