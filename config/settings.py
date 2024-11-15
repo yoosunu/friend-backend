@@ -38,6 +38,7 @@ ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
     "apot.pro",
+    "backend.apot.pro",
 ]
 
 RENDER_EXTERNAL_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
@@ -227,8 +228,8 @@ if DEBUG:
     CELERY_BROKER_URL = "redis://127.0.0.1:6379"
     CELERY_RESULT_BACKEND = "redis://localhost:6379/0"
 else:
-    CELERY_BROKER_URL = "redis://backend.apot.pro:6379"
-    CELERY_RESULT_BACKEND = "redis://backend.apot.pro:6379/0"
+    CELERY_BROKER_URL = "redis://red-csrdoatumphs738fju0g:6379"
+    CELERY_RESULT_BACKEND = "redis://red-csrdoatumphs738fju0g:6379/0"
 
 
 # REDIS CACHE
@@ -236,7 +237,7 @@ else:
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": f"redis://apot.pro:6379/1",
+        "LOCATION": f"redis://red-csrdoatumphs738fju0g:6379/1",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         },
