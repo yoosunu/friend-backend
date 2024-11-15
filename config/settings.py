@@ -42,6 +42,8 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
     "apot-backend.fly.dev",
     "apot.pro",
+    "www.apot.pro",
+    "apotf.onrender.com",
 ]
 
 # RENDER_EXTERNAL_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
@@ -206,14 +208,16 @@ else:
     CORS_ALLOWED_ORIGINS = [
         "https://apot.pro",
         "https://apot-backend.fly.dev",
+        "https://apotf.onrender.com",
     ]
     CSRF_TRUSTED_ORIGINS = [
         "https://apot.pro",
         "https://apot-backend.fly.dev",
+        "https://apotf.onrender.com",
     ]
-    CSRF_COOKIE_SECURE = True
-    SESSION_COOKIE_SECURE = True
 
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
 CORS_ALLOW_CREDENTIALS = True
 
 GH_SECRET = env("GH_SECRET")
