@@ -201,6 +201,9 @@ else:
     CORS_ALLOWED_ORIGINS = ["https://apot.pro"]
     CSRF_TRUSTED_ORIGINS = ["https://apot.pro"]
 
+    SESSION_COOKIE_DOMAIN = ".apot.pro"
+    CSRF_COOKIE_DOMAIN = ".apot.pro"
+
 CORS_ALLOW_CREDENTIALS = True
 
 GH_SECRET = env("GH_SECRET")
