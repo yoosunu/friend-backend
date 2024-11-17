@@ -31,8 +31,8 @@ environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = "RENDER" not in os.environ
-# DEBUG = False
+# DEBUG = "RENDER" not in os.environ
+DEBUG = False
 
 ALLOWED_HOSTS = [
     "localhost",
@@ -40,9 +40,9 @@ ALLOWED_HOSTS = [
     "backend.apot.pro",
 ]
 
-RENDER_EXTERNAL_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
-if RENDER_EXTERNAL_HOSTNAME:
-    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+# RENDER_EXTERNAL_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
+# if RENDER_EXTERNAL_HOSTNAME:
+#     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 
 # Application definition
@@ -198,12 +198,22 @@ if DEBUG:
     CORS_ALLOWED_ORIGINS = ["http://127.0.0.1:3000"]
     CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:3000"]
 else:
-    CORS_ALLOWED_ORIGINS = ["https://apot.pro"]
-    CSRF_TRUSTED_ORIGINS = ["https://apot.pro"]
+    CORS_ALLOWED_ORIGINS = [
+        "https://apot.pro",
+        "https://www.apot.pro",
+        "https://backend.apot.pro",
+    ]
+    CSRF_TRUSTED_ORIGINS = [
+        "https://apot.pro",
+        "https://www.apot.pro",
+        "https://backend.apot.pro",
+    ]
 
     SESSION_COOKIE_DOMAIN = ".apot.pro"
     CSRF_COOKIE_DOMAIN = ".apot.pro"
 
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
 CORS_ALLOW_CREDENTIALS = True
 
 GH_SECRET = env("GH_SECRET")
@@ -221,23 +231,38 @@ if DEBUG:
     CELERY_BROKER_URL = "redis://127.0.0.1:6379"
     CELERY_RESULT_BACKEND = "redis://localhost:6379/0"
 else:
-    CELERY_BROKER_URL = "redis://red-csrdoatumphs738fju0g:6379"
-    CELERY_RESULT_BACKEND = "redis://red-csrdoatumphs738fju0g:6379/0"
+    CELERY_BROKER_URL = env("REDIS_URL")
+    CELERY_RESULT_BACKEND = f"{env('REDIS_URL')}/0"
 
 
 # REDIS CACHE
 
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": f"redis://red-csrdoatumphs738fju0g:6379/1",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        },
+if DEBUG:
+    CACHES = {
+        "default": {
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": f"redis://127.0.0.1:6379/1",
+            "OPTIONS": {
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            },
+        }
     }
-}
+else:
+    CACHES = {
+        "default": {
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": f"{env('REDIS_URL')}/1",
+            "OPTIONS": {
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            },
+        }
+    }
 
 CELERY_BEAT_SCHEDULE = {
+    "create_notifications_task_test": {
+        "task": "notifications.task.create_notifications_task",
+        "schedule": crontab(hour=6, minute=00),
+    },
     "create_notifications_task_morning": {
         "task": "notifications.task.create_notifications_task",
         "schedule": crontab(hour=8, minute=30),
@@ -259,3 +284,4 @@ CELERY_BEAT_SCHEDULE = {
         "schedule": crontab(hour=21, minute=00),
     },
 }
+# python -m gunicorn config.asgi:application -k uvicorn.workers.UvicornWorker && ce
