@@ -1,7 +1,7 @@
 from datetime import datetime, timezone, timedelta
 import requests
 from django.conf import settings
-from config.settings import JWT_SECRET, JWT_SECRET_RF
+from config.settings import JWT_SECRET
 from django.contrib.auth import authenticate, login, logout
 import jwt
 from rest_framework.response import Response
@@ -298,7 +298,7 @@ class RefreshAT(APIView):
             return Response({"error": "Refresh token is required"}, status=400)
 
         try:
-            decoded = jwt.decode(refresh_token, JWT_SECRET_RF, algorithms="HS256")
+            decoded = jwt.decode(refresh_token, JWT_SECRET, algorithms="HS256")
             pk = decoded.get("pk")
             if not pk:
                 raise AuthenticationFailed("invalid refresh token")
