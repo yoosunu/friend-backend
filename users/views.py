@@ -1,11 +1,14 @@
+from datetime import datetime, timezone, timedelta
 import requests
 from django.conf import settings
+from config.settings import JWT_SECRET, JWT_SECRET_RF
 from django.contrib.auth import authenticate, login, logout
+import jwt
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.exceptions import ParseError, NotFound
+from rest_framework.exceptions import ParseError, NotFound, AuthenticationFailed
 from .serializers import (
     PrivateUserSerializer,
     PublicUserSerializer,
@@ -245,3 +248,76 @@ class KakaoLogIn(APIView):
                 return Response(status=status.HTTP_200_OK)
         except Exception:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+class JWTLogIn(APIView):
+    def post(self, request):
+        username = request.data.get("username")
+        password = request.data.get("password")
+        if not username or not password:
+            raise ParseError
+        user = authenticate(
+            request,
+            username=username,
+            password=password,
+        )
+        if user:
+            access_token_expiration = datetime.now(timezone.utc) + timedelta(hours=1)
+            access_token = jwt.encode(
+                {
+                    "pk": user.pk,
+                    "exp": access_token_expiration,
+                },
+                JWT_SECRET,
+                algorithm="HS256",
+            )
+
+            refresh_token_expiration = datetime.now(timezone.utc) + timedelta(days=30)
+            refresh_token = jwt.encode(
+                {
+                    "pk": user.pk,
+                    "exp": refresh_token_expiration,
+                },
+                JWT_SECRET,
+                algorithm="HS256",
+            )
+            return Response(
+                {
+                    "access_token": access_token,
+                    "refresh_token": refresh_token,
+                }
+            )
+        else:
+            return Response({"error": "wrong information"})
+
+
+class RefreshAT(APIView):
+    def post(self, request):
+        refresh_token = request.data.get("refresh_token")
+        if not refresh_token:
+            return Response({"error": "Refresh token is required"}, status=400)
+
+        try:
+            decoded = jwt.decode(refresh_token, JWT_SECRET_RF, algorithms="HS256")
+            pk = decoded.get("pk")
+            if not pk:
+                raise AuthenticationFailed("invalid refresh token")
+
+            user = User.objects.get(pk=pk)
+
+            access_token_expiration = datetime.now(timezone.utc) + timedelta(hours=1)
+            access_token = jwt.encode(
+                {
+                    "pk": user.pk,
+                    "exp": access_token_expiration,
+                },
+                JWT_SECRET,
+                algorithm="HS256",
+            )
+
+            return Response({"access_token": access_token})
+
+        except jwt.ExpiredSignatureError:
+            return Response({"error": "Refresh token has expired"}, status=401)
+        except jwt.DecodeError:
+            return Response({"error": "Invalid refresh token"}, status=401)

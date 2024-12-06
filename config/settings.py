@@ -29,10 +29,12 @@ environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env("SECRET_KEY")
+JWT_SECRET = env("JWT_SECRET")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = "RENDER" not in os.environ
 DEBUG = False
+# DEBUG = True
 
 ALLOWED_HOSTS = [
     "localhost",
@@ -51,8 +53,8 @@ THIRD_PARTY_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "corsheaders",
-    "django_celery_results",
-    "django_celery_beat",
+    # "django_celery_results",
+    # "django_celery_beat",
 ]
 
 CUSTOM_APPS = [
@@ -190,7 +192,7 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.SessionAuthentication",
         "rest_framework.authentication.TokenAuthentication",
-        "config.authentication.UsernameAuthentication",
+        "config.authentication.JWTAuthentication",
     ]
 }
 
@@ -220,19 +222,19 @@ GH_SECRET = env("GH_SECRET")
 
 # Celery section
 
-CELERY_ACCEPT_CONTENT = ["application/json"]
-CELERY_RESULT_SERIALIZER = "json"
-CELERY_TASK_SERIALIZER = "json"
-CELERY_RESULT_BACKEND = "django-db"
-CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
-CELERY_TIMEZONE = "Asia/Seoul"
+# CELERY_ACCEPT_CONTENT = ["application/json"]
+# CELERY_RESULT_SERIALIZER = "json"
+# CELERY_TASK_SERIALIZER = "json"
+# CELERY_RESULT_BACKEND = "django-db"
+# CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
+# CELERY_TIMEZONE = "Asia/Seoul"
 
 if DEBUG:
     CELERY_BROKER_URL = "redis://127.0.0.1:6379"
     CELERY_RESULT_BACKEND = "redis://localhost:6379/0"
-else:
-    CELERY_BROKER_URL = env("REDIS_URL")
-    CELERY_RESULT_BACKEND = f"{env('REDIS_URL')}/0"
+# else:
+#     CELERY_BROKER_URL = env("REDIS_URL")
+#     CELERY_RESULT_BACKEND = f"{env('REDIS_URL')}/0"
 
 
 # REDIS CACHE
@@ -247,41 +249,41 @@ if DEBUG:
             },
         }
     }
-else:
-    CACHES = {
-        "default": {
-            "BACKEND": "django_redis.cache.RedisCache",
-            "LOCATION": f"{env('REDIS_URL')}/1",
-            "OPTIONS": {
-                "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            },
-        }
-    }
+# else:
+#     CACHES = {
+#         "default": {
+#             "BACKEND": "django_redis.cache.RedisCache",
+#             "LOCATION": f"{env('REDIS_URL')}/1",
+#             "OPTIONS": {
+#                 "CLIENT_CLASS": "django_redis.client.DefaultClient",
+#             },
+#         }
+#     }USE_TZ = True
 
-CELERY_BEAT_SCHEDULE = {
-    "create_notifications_task_test": {
-        "task": "notifications.task.create_notifications_task",
-        "schedule": crontab(hour=6, minute=00),
-    },
-    "create_notifications_task_morning": {
-        "task": "notifications.task.create_notifications_task",
-        "schedule": crontab(hour=8, minute=30),
-    },
-    "create_notifications_task_day": {
-        "task": "notifications.task.create_notifications_task",
-        "schedule": crontab(hour=10, minute=30),
-    },
-    "create_notifications_task_afternoon": {
-        "task": "notifications.task.create_notifications_task",
-        "schedule": crontab(hour=13, minute=30),
-    },
-    "create_notifications_task_evening": {
-        "task": "notifications.task.create_notifications_task",
-        "schedule": crontab(hour=17, minute=30),
-    },
-    "create_notifications_task_night": {
-        "task": "notifications.task.create_notifications_task",
-        "schedule": crontab(hour=21, minute=00),
-    },
-}
+# CELERY_BEAT_SCHEDULE = {
+#     "create_notifications_task_test": {
+#         "task": "notifications.task.create_notifications_task",
+#         "schedule": crontab(hour=6, minute=00),
+#     },
+#     "create_notifications_task_morning": {
+#         "task": "notifications.task.create_notifications_task",
+#         "schedule": crontab(hour=8, minute=30),
+#     },
+#     "create_notifications_task_day": {
+#         "task": "notifications.task.create_notifications_task",
+#         "schedule": crontab(hour=10, minute=30),
+#     },
+#     "create_notifications_task_afternoon": {
+#         "task": "notifications.task.create_notifications_task",
+#         "schedule": crontab(hour=13, minute=30),
+#     },
+#     "create_notifications_task_evening": {
+#         "task": "notifications.task.create_notifications_task",
+#         "schedule": crontab(hour=17, minute=30),
+#     },
+#     "create_notifications_task_night": {
+#         "task": "notifications.task.create_notifications_task",
+#         "schedule": crontab(hour=21, minute=00),
+#     },
+# }
 # python -m gunicorn config.asgi:application -k uvicorn.workers.UvicornWorker && ce

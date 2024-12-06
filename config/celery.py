@@ -18,4 +18,4 @@ app.config_from_object("django.conf:settings", namespace="CELERY")
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 app.conf.timezone = "Asia/Seoul"
 
-from notifications.task import get_infos, gather_infos, create_notifications_task
+# from notifications.task import get_infos, gather_infos, create_notifications_task

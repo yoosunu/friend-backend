@@ -6,7 +6,9 @@ from common.models import CommonModel
 class Notification(CommonModel):
     """notification model definition"""
 
-    code = models.PositiveIntegerField()
+    code = models.PositiveIntegerField(
+        unique=True,
+    )
     tag = models.CharField(
         max_length=100,
     )

@@ -3,6 +3,7 @@ from .models import Notification
 
 
 class NotificationSerializer(ModelSerializer):
+
     class Meta:
         model = Notification
         exclude = ("updated_at",)

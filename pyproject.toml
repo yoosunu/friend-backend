@@ -27,6 +27,7 @@ whitenoise = {extras = ["brotli"], version = "^6.8.2"}
 gunicorn = "^23.0.0"
 uvicorn = "^0.32.0"
 django-cloudinary-storage = "^0.3.0"
+pyjwt = "^2.10.1"
 
 
 [build-system]
