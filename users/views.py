@@ -301,7 +301,7 @@ class RefreshAT(APIView):
             decoded = jwt.decode(refresh_token, JWT_SECRET, algorithms="HS256")
             pk = decoded.get("pk")
             if not pk:
-                raise AuthenticationFailed("invalid refresh token")
+                raise AuthenticationFailed("invalid refresh token", status=404)
 
             user = User.objects.get(pk=pk)
 

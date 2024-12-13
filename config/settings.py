@@ -13,7 +13,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 import os
 import environ
-from celery.schedules import crontab
+
+# from celery.schedules import crontab
 import dj_database_url
 
 
@@ -32,8 +33,8 @@ SECRET_KEY = env("SECRET_KEY")
 JWT_SECRET = env("JWT_SECRET")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = "RENDER" not in os.environ
-DEBUG = False
+DEBUG = "RENDER" not in os.environ
+# DEBUG = False
 # DEBUG = True
 
 ALLOWED_HOSTS = [
@@ -42,9 +43,9 @@ ALLOWED_HOSTS = [
     "backend.apot.pro",
 ]
 
-# RENDER_EXTERNAL_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
-# if RENDER_EXTERNAL_HOSTNAME:
-#     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+RENDER_EXTERNAL_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 
 # Application definition
