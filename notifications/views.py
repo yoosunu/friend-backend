@@ -7,13 +7,14 @@ from rest_framework import status
 from .serializers import NotificationSerializer
 from django.db import transaction
 
-# from django.utils.decorators import method_decorator
-# from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
+
 # from .task import gather_infos
 
 
 # Create your views here.
-# @method_decorator(csrf_exempt, name="dispatch")
+@method_decorator(csrf_exempt, name="dispatch")
 class Notifications(APIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
 
@@ -25,7 +26,7 @@ class Notifications(APIView):
         )
         return Response(serializer.data)
 
-    # @method_decorator(csrf_exempt)
+    @method_decorator(csrf_exempt)
     def post(self, request):
         serializer = NotificationSerializer(data=request.data)
         if serializer.is_valid():
