@@ -2,7 +2,7 @@ from .models import Notification
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import NotFound, ParseError
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework import status
 from .serializers import NotificationSerializer
 from django.db import transaction
@@ -15,7 +15,7 @@ from django.db import transaction
 # Create your views here.
 # @method_decorator(csrf_exempt, name="dispatch")
 class Notifications(APIView):
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get(self, request):
         notifications = Notification.objects.all()
@@ -47,7 +47,7 @@ class Notifications(APIView):
 
 
 class NotificationDetail(APIView):
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_object(self, code):
         try:
