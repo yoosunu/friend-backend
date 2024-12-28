@@ -14,9 +14,9 @@ from django.views.decorators.csrf import csrf_exempt
 
 
 # Create your views here.
-# @method_decorator(csrf_exempt, name="dispatch")
+@method_decorator(csrf_exempt, name="dispatch")
 class Notifications(APIView):
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    # permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get(self, request):
         notifications = Notification.objects.all()
@@ -26,7 +26,7 @@ class Notifications(APIView):
         )
         return Response(serializer.data)
 
-    # @method_decorator(csrf_exempt)
+    @method_decorator(csrf_exempt)
     def post(self, request):
         serializer = NotificationSerializer(data=request.data)
         if serializer.is_valid():
@@ -48,7 +48,7 @@ class Notifications(APIView):
 
 
 class NotificationDetail(APIView):
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    # permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_object(self, code):
         try:
