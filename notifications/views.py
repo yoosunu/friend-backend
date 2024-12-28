@@ -31,7 +31,7 @@ class Notifications(APIView):
         serializer = NotificationSerializer(data=request.data)
         if serializer.is_valid():
             try:
-                with transaction.atomic:
+                with transaction.atomic():
                     new_notification = serializer.save()
                     serializer = NotificationSerializer(new_notification)
                     return Response(
@@ -39,7 +39,7 @@ class Notifications(APIView):
                         status=status.HTTP_201_CREATED,
                     )
             except Exception:
-                ParseError()
+                raise ParseError()
         else:
             return Response(
                 serializer.errors,
