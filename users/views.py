@@ -295,15 +295,24 @@ class RefreshAT(APIView):
     def post(self, request):
         refresh_token = request.data.get("refresh_token")
         if not refresh_token:
-            return Response({"error": "Refresh token is required"}, status=400)
+            return Response(
+                {"error": "Refresh token is required"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
         try:
             decoded = jwt.decode(refresh_token, JWT_SECRET, algorithms="HS256")
             pk = decoded.get("pk")
             if not pk:
-                raise AuthenticationFailed("invalid refresh token", status=404)
+                raise AuthenticationFailed(
+                    "User pk not found",
+                    status=status.HTTP_404_NOT_FOUND,
+                )
 
-            user = User.objects.get(pk=pk)
+            try:
+                user = User.objects.get(pk=pk)
+            except Exception:
+                raise NotFound("User not found")
 
             access_token_expiration = datetime.now(timezone.utc) + timedelta(hours=1)
             access_token = jwt.encode(
@@ -318,6 +327,12 @@ class RefreshAT(APIView):
             return Response({"access_token": access_token})
 
         except jwt.ExpiredSignatureError:
-            return Response({"error": "Refresh token has expired"}, status=401)
+            return Response(
+                {"error": "Refresh token has expired"},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
         except jwt.DecodeError:
-            return Response({"error": "Invalid refresh token"}, status=401)
+            return Response(
+                {"error": "Invalid refresh token"},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
