@@ -41,7 +41,7 @@ class TD(APIView):
             td = ThanksDate.objects.get(pk=pk)
             return td
         except ThanksDate.DoesNotExist:
-            raise NotFound
+            raise NotFound()
 
     def get(self, request, pk):
         td = self.get_object(pk)
@@ -82,7 +82,7 @@ class Tks(APIView):
             thanksDate = ThanksDate.objects.get(pk=pk)
             return thanksDate
         except thanksDate.DoesNotExist:
-            raise NotFound
+            raise NotFound()
 
     def get(self, request, pk):
         thanksDate = self.get_object(pk)
@@ -115,7 +115,7 @@ class Tk(APIView):
             tk = Thank.objects.get(pk=pk_)
             return tk
         except Thank.DoesNotExist:
-            raise NotFound
+            raise NotFound()
 
     def get(self, request, pk, pk_):
         tk = self.get_object(pk_)

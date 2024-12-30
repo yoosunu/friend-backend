@@ -22,7 +22,7 @@ class Todos(APIView):
             )
             return Response(serializer.data)
         except Todo.DoesNotExist:
-            raise NotFound
+            raise NotFound()
 
     def post(self, request):
         serializer = TodoSerializer(data=request.data)
@@ -42,7 +42,7 @@ class TodoDetail(APIView):
             todo = Todo.objects.get(pk=pk)
             return todo
         except Todo.DoesNotExist:
-            raise NotFound
+            raise NotFound()
 
     def get(self, request, pk):
         todo = self.get_object(pk)
@@ -84,7 +84,7 @@ class EveryDays(APIView):
             )
             return Response(serializer.data)
         except Everyday.DoesNotExist:
-            raise NotFound
+            raise NotFound()
 
     def post(self, request, pk):
         todo = Todo.objects.get(pk=pk)
@@ -105,7 +105,7 @@ class EveryDay(APIView):
             everyday = Everyday.objects.get(pk=pk_, todo__pk=pk)
             return everyday
         except Everyday.DoesNotExist:
-            raise NotFound
+            raise NotFound()
 
     def get(self, request, pk, pk_):
         everyday = self.get_object(pk, pk_)
@@ -150,7 +150,7 @@ class Plans(APIView):
             )
             return Response(serializer.data)
         except Plan.DoesNotExist:
-            raise NotFound
+            raise NotFound()
 
     def post(self, request, pk):
         todo = Todo.objects.get(pk=pk)
@@ -171,7 +171,7 @@ class PlanDetail(APIView):
             plan = Plan.objects.get(pk=pk_, todo__pk=pk)
             return plan
         except Plan.DoesNotExist:
-            raise NotFound
+            raise NotFound()
 
     def get(self, request, pk, pk_):
         plan = self.get_object(pk, pk_)

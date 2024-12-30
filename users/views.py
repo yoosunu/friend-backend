@@ -72,7 +72,7 @@ class PublicUser(APIView):
         try:
             user = User.objects.get(username=username)
         except User.DoesNotExist:
-            raise NotFound
+            raise NotFound()
         serializer = PublicUserSerializer(user)
         return Response(serializer.data)
 
@@ -85,13 +85,13 @@ class ChangePassword(APIView):
         old_password = request.data.get("old_password")
         new_password = request.data.get("new_password")
         if not old_password or not new_password:
-            raise ParseError
+            raise ParseError()
         if user.check_password(old_password):
             user.set_password(new_password)
             user.save()
             return Response(status=status.HTTP_200_OK)
         else:
-            raise ParseError
+            raise ParseError()
 
 
 class LogIn(APIView):
@@ -99,7 +99,7 @@ class LogIn(APIView):
         username = request.data.get("username")
         password = request.data.get("password")
         if not username or not password:
-            raise ParseError
+            raise ParseError()
         user = authenticate(
             request,
             username=username,
@@ -255,7 +255,7 @@ class JWTLogIn(APIView):
         username = request.data.get("username")
         password = request.data.get("password")
         if not username or not password:
-            raise ParseError
+            raise ParseError()
         user = authenticate(
             request,
             username=username,

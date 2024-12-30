@@ -43,7 +43,7 @@ class wishlistDetail(APIView):
         try:
             wish = Wishlist.objects.get(pk=pk, user=user)
         except Wishlist.DoesNotExist:
-            raise NotFound
+            raise NotFound()
         return wish
 
     def get(self, request, pk):
@@ -80,13 +80,13 @@ class addItem(APIView):
         try:
             return Wishlist.objects.get(pk=pk, user=user)
         except Wishlist.DoesNotExist:
-            raise NotFound
+            raise NotFound()
 
     def get_item(self, pk):
         try:
             return Item.objects.get(pk=pk)
         except Item.DoesNotExist:
-            raise NotFound
+            raise NotFound()
 
     def put(self, request, pk, item_pk):
         wish = self.get_wishs(pk=pk, user=request.user)

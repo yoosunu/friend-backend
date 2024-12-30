@@ -16,7 +16,7 @@ class PhotoDetail(APIView):
             photo = Photo.objects.get(pk=pk)
             return photo
         except Photo.DoesNotExist:
-            raise NotFound
+            raise NotFound()
 
     def delete(self, request, pk):
         photo = self.get_object(pk)

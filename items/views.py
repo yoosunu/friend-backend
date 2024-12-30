@@ -79,7 +79,7 @@ class ItemDetail(APIView):
             item = Item.objects.get(pk=pk)
             return item
         except Item.DoesNotExist:
-            raise NotFound
+            raise NotFound()
 
     def get(self, request, pk):
         serializer = ItemDetailSerializer(
@@ -127,7 +127,7 @@ class ItemReviews(APIView):
         try:
             return Item.objects.get(pk=pk)
         except Item.DoesNotExist:
-            raise NotFound
+            raise NotFound()
 
     def get(self, request, pk):
         try:
@@ -172,7 +172,7 @@ class ItemReviewDetail(APIView):
         try:
             return Review.objects.get(pk=review_pk)
         except Review.DoesNotExist:
-            raise NotFound
+            raise NotFound()
 
     def get(self, request, pk, review_pk):
         review = self.get_object(review_pk)
@@ -217,7 +217,7 @@ class ItemPhotos(APIView):
             item = Item.objects.get(pk=pk)
             return item
         except Item.DoesNotExist:
-            raise NotFound
+            raise NotFound()
 
     def post(self, request, pk):
         if request.user != self.get_object(pk).user:
@@ -241,4 +241,4 @@ class Tags(APIView):
             )
             return Response(serializer.data)
         except Tag.DoesNotExist:
-            raise NotFound
+            raise NotFound()
