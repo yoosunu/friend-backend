@@ -10,19 +10,19 @@ class Notification(CommonModel):
         unique=True,
     )
     tag = models.CharField(
-        max_length=100,
+        max_length=1000,
     )
     title = models.CharField(
-        max_length=300,
+        max_length=1000,
     )
     link = models.CharField(
-        max_length=400,
+        max_length=1000,
     )
     writer = models.CharField(
-        max_length=100,
+        max_length=1000,
     )
     etc = models.CharField(
-        max_length=100,
+        max_length=1000,
     )
 
     def __str__(self) -> str:
