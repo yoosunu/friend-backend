@@ -34,8 +34,8 @@ VAPID_PRIVATE_KEY = env("VAPID_PRIVATE_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = "RENDER" not in os.environ
-# DEBUG = False
-DEBUG = True
+DEBUG = False
+# DEBUG = True
 
 ALLOWED_HOSTS = [
     "localhost",
