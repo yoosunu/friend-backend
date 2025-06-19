@@ -28,10 +28,14 @@ environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 SECRET_KEY = env("SECRET_KEY")
 JWT_SECRET = env("JWT_SECRET")
 
+# for push logic
+VAPID_PUBLIC_KEY = env("VAPID_PUBLIC_KEY")
+VAPID_PRIVATE_KEY = env("VAPID_PRIVATE_KEY")
+
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = "RENDER" not in os.environ
-DEBUG = False
-# DEBUG = True
+# DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     "localhost",
@@ -66,6 +70,7 @@ CUSTOM_APPS = [
     "thanks.apps.ThanksConfig",
     "todos.apps.TodosConfig",
     "notifications.apps.NotificationsConfig",
+    "subscriptions.apps.SubscriptionsConfig",
 ]
 
 SYSTEM_APPS = [
@@ -192,8 +197,14 @@ REST_FRAMEWORK = {
 }
 
 if DEBUG:
-    CORS_ALLOWED_ORIGINS = ["http://127.0.0.1:3000"]
-    CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:3000"]
+    CORS_ALLOWED_ORIGINS = [
+        "http://127.0.0.1:3000",
+        "http://localhost:3000",
+    ]
+    CSRF_TRUSTED_ORIGINS = [
+        "http://127.0.0.1:3000",
+        "http://localhost:3000",
+    ]
 else:
     CORS_ALLOWED_ORIGINS = [
         "https://apot.pro",
