@@ -1,9 +1,9 @@
 from django.contrib import admin
 
-from .models import Subscription
+from .models import Subs
 
 
 # Register your models here.
-@admin.register(Subscription)
+@admin.register(Subs)
 class SubscriptionAdmin(admin.ModelAdmin):
     list_display = ("endpoint",)

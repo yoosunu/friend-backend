@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.db import transaction
-from .models import Subscription
+from .models import Subs
 from .serializers import SubscriptionSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -32,13 +32,13 @@ class SubscriptionsAdmin(APIView):
 
     def get(self, request):
         try:
-            subscriptions = Subscription.objects.all()
+            subscriptions = Subs.objects.all()
             serializer = SubscriptionSerializer(
                 subscriptions,
                 many=True,
             )
             return Response(serializer.data)
-        except Subscription.DoesNotExist:
+        except Subs.DoesNotExist:
             raise NotFound
 
     # def delete(self, request)

@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer
-from .models import Subscription
+from .models import Subs
 from users.serializers import TinyUserSerializer
 
 
@@ -9,7 +9,7 @@ class SubscriptionSerializer(ModelSerializer):
     )
 
     class Meta:
-        model = Subscription
+        model = Subs
         exclude = (
             "created_at",
             "updated_at",
