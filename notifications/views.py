@@ -40,13 +40,6 @@ def send_push(subscription, noti):
 
 def create_multiple_notifications(notifications):
     # save multiple notis.
-    Notification.objects.bulk_create(
-        [Notification(**notification) for notification in notifications]
-    )
-
-
-def create_multiple_notifications(notifications):
-    # save multiple notis.
     noti_objs = [Notification(**notification) for notification in notifications]
     Notification.objects.bulk_create(noti_objs)
 

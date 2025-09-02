@@ -20,4 +20,4 @@ class Subs(CommonModel):
     )  # public key
 
     def __str__(self):
-        return self.endpoint
+        return self.endpoint or "No Endpoint"
