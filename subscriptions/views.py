@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.db import transaction
+from django.http import JsonResponse
 from .models import Subs
 from .serializers import SubscriptionSerializer
 from rest_framework.views import APIView
@@ -42,3 +43,16 @@ class SubscriptionsAdmin(APIView):
             raise NotFound
 
     # def delete(self, request)
+
+
+def debug_sub(request):
+    data = []
+    for sub in Subs.objects.all():
+        data.append(
+            {
+                "endpoint": sub.endpoint,
+                "keys_p256dh": sub.keys_p256dh,
+                "keys_auth": sub.keys_auth,
+            }
+        )
+    return JsonResponse(data, safe=False)
