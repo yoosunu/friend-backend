@@ -8,6 +8,9 @@ from rest_framework.response import Response
 from rest_framework.exceptions import NotFound, ParseError
 from rest_framework import status
 from rest_framework.permissions import IsAdminUser
+import logging
+
+logger = logging.getLogger("django")
 
 
 # Create your views here.
@@ -47,12 +50,21 @@ class SubscriptionsAdmin(APIView):
 
 def debug_sub(request):
     data = []
-    for sub in Subs.objects.all():
-        data.append(
-            {
-                "endpoint": sub.endpoint,
-                "keys_p256dh": sub.keys_p256dh,
-                "keys_auth": sub.keys_auth,
-            }
-        )
+    error_info = None
+    try:
+        for s in Subs.objects.all():
+            data.append(
+                {
+                    "endpoint": s.endpoint or "No Endpoint",
+                    "keys_p256dh": s.keys_p256dh or "",
+                    "keys_auth": s.keys_auth or "",
+                }
+            )
+    except Exception as e:
+        # 에러 정보를 브라우저로 바로 보내기
+        import traceback
+
+        error_info = traceback.format_exc()
+        return JsonResponse({"error": str(e), "traceback": error_info}, status=500)
+
     return JsonResponse(data, safe=False)
