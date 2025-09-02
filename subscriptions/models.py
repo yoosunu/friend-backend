@@ -6,6 +6,18 @@ from common.models import CommonModel
 class Subs(CommonModel):
     """subscription model definition"""
 
-    endpoint = models.URLField()
-    keys_auth = models.CharField(max_length=256)  # private key
-    keys_p256dh = models.CharField(max_length=256)  # public key
+    endpoint = models.URLField(
+        null=True,
+        blank=True,
+    )
+    keys_auth = models.TextField(
+        null=True,
+        blank=True,
+    )  # private key
+    keys_p256dh = models.TextField(
+        null=True,
+        blank=True,
+    )  # public key
+
+    def __str__(self):
+        return self.endpoint

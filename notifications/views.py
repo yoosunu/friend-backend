@@ -34,9 +34,7 @@ def send_push(subscription, noti):
         subscription_info=subscription,
         data=message,
         vapid_private_key=settings.VAPID_PRIVATE_KEY,
-        vapid_claims={
-            "sub": "mailto:yoosunu010@naver.com",
-        },
+        vapid_claims={"sub": "mailto:yoosunu010@naver.com"},
     )
 
 
