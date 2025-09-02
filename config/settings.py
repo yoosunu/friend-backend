@@ -295,30 +295,30 @@ if DEBUG:
 # python -m gunicorn config.asgi:application -k uvicorn.workers.UvicornWorker && ce
 
 # Logging
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,  # 기존 logger 유지
-    "formatters": {
-        "verbose": {
-            "format": "[{levelname}] {asctime} {name} {message}",
-            "style": "{",
-        },
-        "simple": {
-            "format": "[{levelname}] {message}",
-            "style": "{",
-        },
-    },
-    "handlers": {
-        "console": {
-            "class": "logging.StreamHandler",  # 콘솔 출력
-            "formatter": "simple",
-        },
-    },
-    "loggers": {
-        "django": {
-            "handlers": ["console"],
-            "level": "ERROR",  # ERROR 이상만 기록
-            "propagate": True,
-        },
-    },
-}
+# LOGGING = {
+#     "version": 1,
+#     "disable_existing_loggers": False,  # 기존 logger 유지
+#     "formatters": {
+#         "verbose": {
+#             "format": "[{levelname}] {asctime} {name} {message}",
+#             "style": "{",
+#         },
+#         "simple": {
+#             "format": "[{levelname}] {message}",
+#             "style": "{",
+#         },
+#     },
+#     "handlers": {
+#         "console": {
+#             "class": "logging.StreamHandler",  # 콘솔 출력
+#             "formatter": "simple",
+#         },
+#     },
+#     "loggers": {
+#         "django": {
+#             "handlers": ["console"],
+#             "level": "ERROR",  # ERROR 이상만 기록
+#             "propagate": True,
+#         },
+#     },
+# }
