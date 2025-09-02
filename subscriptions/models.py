@@ -6,7 +6,7 @@ from common.models import CommonModel
 class Subs(CommonModel):
     """subscription model definition"""
 
-    endpoint = models.URLField(
+    endpoint = models.TextField(
         null=True,
         blank=True,
     )

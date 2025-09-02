@@ -42,11 +42,3 @@ class SubscriptionsAdmin(APIView):
             raise NotFound
 
     # def delete(self, request)
-
-
-""" 
-vapid key local, deployment 오류 아님
-public key render 에서 일단 지우자
-
-text field로 변경완료
-"""
