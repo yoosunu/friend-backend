@@ -8,9 +8,7 @@ from rest_framework.response import Response
 from rest_framework.exceptions import NotFound, ParseError
 from rest_framework import status
 from rest_framework.permissions import IsAdminUser
-import logging
-
-logger = logging.getLogger("django")
+from django.core.management import call_command
 
 
 # Create your views here.
@@ -46,6 +44,15 @@ class SubscriptionsAdmin(APIView):
             raise NotFound
 
     # def delete(self, request)
+
+
+def force_migrate(request):
+    try:
+        call_command("makemigrations", interactive=False)
+        call_command("migrate", interactive=False)
+        return JsonResponse({"status": "ok"})
+    except Exception as e:
+        return JsonResponse({"error": str(e)})
 
 
 def debug_sub(request):
