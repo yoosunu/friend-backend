@@ -44,9 +44,9 @@ def create_multiple_notifications(notifications):
     Notification.objects.bulk_create(noti_objs)
 
     # webpush logic
-    from subscriptions.models import Subscription
+    from subscriptions.models import Subs
 
-    subscriptions = Subscription.objects.all()
+    subscriptions = Subs.objects.all()
 
     for noti in noti_objs:
         for sub in subscriptions:
@@ -105,9 +105,13 @@ class Notifications(APIView):
     @method_decorator(csrf_exempt)
     def post(self, request):
         data = request.data
+        # print("wow: ", request.data) # for debug
         if not isinstance(data, list):
             data = [data]
-        serializer = NotificationSerializer(data=data, many=True)
+        serializer = NotificationSerializer(
+            data=data,
+            many=True,
+        )
         if serializer.is_valid():
             try:
                 with transaction.atomic():
@@ -120,6 +124,7 @@ class Notifications(APIView):
             except Exception:
                 raise ParseError()
         else:
+            # print(serializer.errors) for debug
             return Response(
                 serializer.errors,
                 status=status.HTTP_400_BAD_REQUEST,
