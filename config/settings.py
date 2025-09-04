@@ -301,6 +301,7 @@ if DEBUG:
 # Logging
 
 DISCORD_WEBHOOK_URL = env("DISCORD_WEBHOOK_URL")
+DISABLE_DISCORD_LOGS = os.getenv("DISABLE_DISCORD_LOGS", "False") == "True"
 
 LOGGING = {
     "version": 1,

@@ -14,6 +14,9 @@ class DiscordWebhookHandler(logging.Handler):
             raise ValueError("DISCORD_WEBHOOK_URL is not set")
 
     def emit(self, record: logging.LogRecord):
+        if getattr(settings, "DISABLE_DISCORD_LOGS", False):
+            return
+
         try:
             # 기본 메시지
             msg = self.format(record)
@@ -27,7 +30,7 @@ class DiscordWebhookHandler(logging.Handler):
             if len(content) > DISCORD_MAX:
                 content = content[-DISCORD_MAX:]
 
-            requests.post(self.webhook_url, json={"content": content}, timeout=3)
+            requests.post(self.webhook_url, json={"content": content}, timeout=2)
         except Exception:
             # 로깅 중 에러는 절대 예외 전파하지 않음
             pass
