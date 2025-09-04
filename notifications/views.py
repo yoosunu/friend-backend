@@ -14,6 +14,7 @@ from pywebpush import webpush
 from django.conf import settings
 
 import json
+import logging
 
 # from .task import gather_infos
 
@@ -82,26 +83,6 @@ class Notifications(APIView):
         )
         return Response(serializer.data)
 
-    # @method_decorator(csrf_exempt)
-    # def post(self, request):
-    #     serializer = NotificationSerializer(data=request.data)
-    #     if serializer.is_valid():
-    #         try:
-    #             with transaction.atomic():
-    #                 new_notification = serializer.save()
-    #                 serializer = NotificationSerializer(new_notification)
-    #                 return Response(
-    #                     serializer.data,
-    #                     status=status.HTTP_201_CREATED,
-    #                 )
-    #         except Exception:
-    #             raise ParseError()
-    #     else:
-    #         return Response(
-    #             serializer.errors,
-    #             status=status.HTTP_400_BAD_REQUEST,
-    #         )
-
     @method_decorator(csrf_exempt)
     def post(self, request):
         data = request.data
@@ -121,10 +102,22 @@ class Notifications(APIView):
                         serializer.data,
                         status=status.HTTP_201_CREATED,
                     )
-            except Exception:
+            except Exception as e:
+                logger = logging.getLogger("django")
+                logger.error(
+                    f"Notifications push error: {e}",
+                    exc_info=True,
+                )
+
                 raise ParseError()
         else:
             # print(serializer.errors) for debug
+            logger = logging.getLogger("django")
+            logger.error(
+                f"Notification serializer error: {serializer.errors}",
+                exc_info=True,
+            )
+
             return Response(
                 serializer.errors,
                 status=status.HTTP_400_BAD_REQUEST,

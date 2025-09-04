@@ -297,31 +297,33 @@ if DEBUG:
 # }
 # python -m gunicorn config.asgi:application -k uvicorn.workers.UvicornWorker && ce
 
+
 # Logging
-# LOGGING = {
-#     "version": 1,
-#     "disable_existing_loggers": False,  # 기존 logger 유지
-#     "formatters": {
-#         "verbose": {
-#             "format": "[{levelname}] {asctime} {name} {message}",
-#             "style": "{",
-#         },
-#         "simple": {
-#             "format": "[{levelname}] {message}",
-#             "style": "{",
-#         },
-#     },
-#     "handlers": {
-#         "console": {
-#             "class": "logging.StreamHandler",  # 콘솔 출력
-#             "formatter": "simple",
-#         },
-#     },
-#     "loggers": {
-#         "django": {
-#             "handlers": ["console"],
-#             "level": "ERROR",  # ERROR 이상만 기록
-#             "propagate": True,
-#         },
-#     },
-# }
+
+DISCORD_WEBHOOK_URL = env("DISCORD_WEBHOOK_URL")
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,  # 기존 logger 유지
+    "formatters": {
+        "discord": {
+            "format": "[{levelname}] {asctime} {name} | {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "discord": {
+            "level": "ERROR",
+            "class": "config.discord_logging.DiscordWebhookHandler",
+            "formatter": "discord",
+            # Webhook URL은 핸들러 내부에서 환경변수로 읽음
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["discord"],
+            "level": "ERROR",
+            "propagate": True,
+        },
+    },
+}

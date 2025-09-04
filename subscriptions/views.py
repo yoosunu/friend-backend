@@ -5,12 +5,14 @@ from .serializers import SubscriptionSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import NotFound, ParseError
-
-# from rest_framework import status
 from rest_framework.permissions import IsAdminUser
 
+"""
+# debuging section
+# from rest_framework import status
 # from django.http import JsonResponse
 # from django.core.management import call_command
+"""
 
 
 # Create your views here.
@@ -48,32 +50,35 @@ class SubscriptionsAdmin(APIView):
     # def delete(self, request)
 
 
-# def force_migrate(request):
-#     try:
-#         call_command("makemigrations", interactive=False)
-#         call_command("migrate", interactive=False)
-#         return JsonResponse({"status": "ok"})
-#     except Exception as e:
-#         return JsonResponse({"error": str(e)})
+"""
+# debuging section
+def force_migrate(request):
+    try:
+        call_command("makemigrations", interactive=False)
+        call_command("migrate", interactive=False)
+        return JsonResponse({"status": "ok"})
+    except Exception as e:
+        return JsonResponse({"error": str(e)})
 
 
-# def debug_sub(request):
-#     data = []
-#     error_info = None
-#     try:
-#         for s in Subs.objects.all():
-#             data.append(
-#                 {
-#                     "endpoint": s.endpoint or "No Endpoint",
-#                     "keys_p256dh": s.keys_p256dh or "",
-#                     "keys_auth": s.keys_auth or "",
-#                 }
-#             )
-#     except Exception as e:
-#         # 에러 정보를 브라우저로 바로 보내기
-#         import traceback
+def debug_sub(request):
+    data = []
+    error_info = None
+    try:
+        for s in Subs.objects.all():
+            data.append(
+                {
+                    "endpoint": s.endpoint or "No Endpoint",
+                    "keys_p256dh": s.keys_p256dh or "",
+                    "keys_auth": s.keys_auth or "",
+                }
+            )
+    except Exception as e:
+        # 에러 정보를 브라우저로 바로 보내기
+        import traceback
 
-#         error_info = traceback.format_exc()
-#         return JsonResponse({"error": str(e), "traceback": error_info}, status=500)
+        error_info = traceback.format_exc()
+        return JsonResponse({"error": str(e), "traceback": error_info}, status=500)
 
-#     return JsonResponse(data, safe=False)
+    return JsonResponse(data, safe=False)
+"""
