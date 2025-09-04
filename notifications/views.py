@@ -112,11 +112,6 @@ class Notifications(APIView):
                 raise ParseError()
         else:
             # print(serializer.errors) for debug
-            logger = logging.getLogger("django")
-            logger.error(
-                f"Notification serializer error: {serializer.errors}",
-                exc_info=True,
-            )
 
             return Response(
                 serializer.errors,
