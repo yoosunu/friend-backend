@@ -49,7 +49,7 @@ class SubscriptionsAdmin(APIView):
 
 # debuging section
 
-
+"""
 # migrate logic
 def force_migrate(request):
     try:
@@ -80,3 +80,4 @@ def debug_sub(request):
         return JsonResponse({"error": str(e), "traceback": error_info}, status=500)
 
     return JsonResponse(data, safe=False)
+"""
