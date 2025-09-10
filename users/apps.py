@@ -7,6 +7,7 @@ class UsersConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
     name = "users"
 
+    # for creating su
     # def ready(self):
     #     User = get_user_model()
     #     if not User.objects.filter(username="yoosunu").exists():

@@ -2,13 +2,10 @@ from .models import Notification
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import NotFound, ParseError
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAdminUser
 from rest_framework import status
 from .serializers import NotificationSerializer
 from django.db import transaction
-
-from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_exempt
 
 from pywebpush import webpush
 from django.conf import settings
@@ -71,9 +68,13 @@ def create_multiple_notifications(notifications):
 
 
 # Create your views here.
-@method_decorator(csrf_exempt, name="dispatch")
 class Notifications(APIView):
-    # permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_permissions(self):
+        if self.request.method == "POST":
+            return [IsAdminUser()]
+        return super().get_permissions()
 
     def get(self, request):
         notifications = Notification.objects.all()
@@ -83,7 +84,6 @@ class Notifications(APIView):
         )
         return Response(serializer.data)
 
-    @method_decorator(csrf_exempt)
     def post(self, request):
         data = request.data
         # print("wow: ", request.data) # for debug

@@ -281,6 +281,7 @@ class JWTLogIn(APIView):
                 JWT_SECRET,
                 algorithm="HS256",
             )
+
             return Response(
                 {
                     "access_token": access_token,
@@ -288,7 +289,10 @@ class JWTLogIn(APIView):
                 }
             )
         else:
-            return Response({"error": "wrong information"})
+            return Response(
+                {"error": "Wrong username or password"},
+                status=401,
+            )
 
 
 class RefreshAT(APIView):

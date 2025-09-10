@@ -6,6 +6,12 @@ from common.models import CommonModel
 class Subs(CommonModel):
     """subscription model definition"""
 
+    user = models.ForeignKey(
+        "users.User",
+        on_delete=models.CASCADE,
+        related_name="subscriptions",
+    )
+
     endpoint = models.TextField(
         null=True,
         blank=True,

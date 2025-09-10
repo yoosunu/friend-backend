@@ -7,7 +7,10 @@ from users.models import User
 
 class JWTAuthentication(BaseAuthentication):
     def authenticate(self, request):
-        token = request.headers.get("Jwt")
+        auth_header = request.headers.get("Authorization")
+        if not auth_header or not auth_header.startswith("Bearer "):
+            return None
+        token = auth_header.split(" ")[1]
         if not token:
             return None
         decoded = jwt.decode(

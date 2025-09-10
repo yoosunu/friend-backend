@@ -192,7 +192,6 @@ PAGE_SIZE = 3
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.SessionAuthentication",
-        "rest_framework.authentication.TokenAuthentication",
         "config.authentication.JWTAuthentication",
     ]
 }
@@ -299,32 +298,32 @@ if DEBUG:
 
 
 # Logging
+if not DEBUG:
+    DISCORD_WEBHOOK_URL = env("DISCORD_WEBHOOK_URL")
+    DISABLE_DISCORD_LOGS = os.getenv("DISABLE_DISCORD_LOGS", "False") == "True"
 
-DISCORD_WEBHOOK_URL = env("DISCORD_WEBHOOK_URL")
-DISABLE_DISCORD_LOGS = os.getenv("DISABLE_DISCORD_LOGS", "False") == "True"
-
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,  # 기존 logger 유지
-    "formatters": {
-        "discord": {
-            "format": "[{levelname}] {asctime} {name} | {message}",
-            "style": "{",
+    LOGGING = {
+        "version": 1,
+        "disable_existing_loggers": False,  # 기존 logger 유지
+        "formatters": {
+            "discord": {
+                "format": "[{levelname}] {asctime} {name} | {message}",
+                "style": "{",
+            },
         },
-    },
-    "handlers": {
-        "discord": {
-            "level": "ERROR",
-            "class": "config.discord_logging.DiscordWebhookHandler",
-            "formatter": "discord",
-            # Webhook URL은 핸들러 내부에서 환경변수로 읽음
+        "handlers": {
+            "discord": {
+                "level": "ERROR",
+                "class": "config.discord_logging.DiscordWebhookHandler",
+                "formatter": "discord",
+                # Webhook URL은 핸들러 내부에서 환경변수로 읽음
+            },
         },
-    },
-    "loggers": {
-        "django": {
-            "handlers": ["discord"],
-            "level": "ERROR",
-            "propagate": True,
+        "loggers": {
+            "django": {
+                "handlers": ["discord"],
+                "level": "ERROR",
+                "propagate": True,
+            },
         },
-    },
-}
+    }
