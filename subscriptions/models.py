@@ -10,6 +10,8 @@ class Subs(CommonModel):
         "users.User",
         on_delete=models.CASCADE,
         related_name="subscriptions",
+        null=True,
+        blank=True,
     )
 
     endpoint = models.TextField(
