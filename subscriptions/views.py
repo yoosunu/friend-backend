@@ -7,12 +7,9 @@ from rest_framework.response import Response
 from rest_framework.exceptions import NotFound, ParseError
 from rest_framework.permissions import IsAdminUser
 
-"""
 # debuging section
-# from rest_framework import status
-# from django.http import JsonResponse
-# from django.core.management import call_command
-"""
+from django.http import JsonResponse
+from django.core.management import call_command
 
 
 # Create your views here.
@@ -23,7 +20,7 @@ class Subscription(APIView):
         if serializer.is_valid():
             try:
                 with transaction.atomic():
-                    new_subscription = serializer.save()
+                    new_subscription = serializer.save(user=request.user)
                     serializer = SubscriptionSerializer(new_subscription)
                     return Response(serializer.data)
             except Exception:
@@ -50,8 +47,10 @@ class SubscriptionsAdmin(APIView):
     # def delete(self, request)
 
 
-"""
 # debuging section
+
+
+# migrate logic
 def force_migrate(request):
     try:
         call_command("makemigrations", interactive=False)
@@ -81,4 +80,3 @@ def debug_sub(request):
         return JsonResponse({"error": str(e), "traceback": error_info}, status=500)
 
     return JsonResponse(data, safe=False)
-"""
