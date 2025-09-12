@@ -2,6 +2,7 @@ from rest_framework.authentication import BaseAuthentication
 from rest_framework.exceptions import AuthenticationFailed
 from config.settings import JWT_SECRET
 import jwt
+from jwt.exceptions import ExpiredSignatureError, InvalidTokenError
 from users.models import User
 
 
@@ -13,11 +14,18 @@ class JWTAuthentication(BaseAuthentication):
         token = auth_header.split(" ")[1]
         if not token:
             return None
-        decoded = jwt.decode(
-            token,
-            JWT_SECRET,
-            algorithms="HS256",
-        )
+
+        try:
+            decoded = jwt.decode(
+                token,
+                JWT_SECRET,
+                algorithms="HS256",
+            )
+        except ExpiredSignatureError:
+            raise AuthenticationFailed("Token has expired")
+        except InvalidTokenError:
+            raise AuthenticationFailed("Invalid token")
+
         pk = decoded.get("pk")
         if not pk:
             raise AuthenticationFailed("invaild token")
