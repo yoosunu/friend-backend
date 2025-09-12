@@ -8,8 +8,8 @@ from rest_framework.exceptions import NotFound, ParseError
 from rest_framework.permissions import IsAdminUser
 
 # debuging section
-from django.http import JsonResponse
-from django.core.management import call_command
+# from django.http import JsonResponse
+# from django.core.management import call_command
 
 
 # Create your views here.
