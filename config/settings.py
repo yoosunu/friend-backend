@@ -41,7 +41,7 @@ ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
     "10.0.2.2",
-    "backend.apot.pro",
+    "backend.apotb.shop",
 ]
 
 RENDER_EXTERNAL_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
@@ -210,18 +210,18 @@ if DEBUG:
     ]
 else:
     CORS_ALLOWED_ORIGINS = [
-        "https://apot.pro",
-        "https://www.apot.pro",
-        "https://backend.apot.pro",
+        "https://apotb.shop",
+        "https://www.apotb.shop",
+        "https://backend.apotb.shop",
     ]
     CSRF_TRUSTED_ORIGINS = [
-        "https://apot.pro",
-        "https://www.apot.pro",
-        "https://backend.apot.pro",
+        "https://apotb.shop",
+        "https://www.apotb.shop",
+        "https://backend.apotb.shop",
     ]
 
-    SESSION_COOKIE_DOMAIN = ".apot.pro"
-    CSRF_COOKIE_DOMAIN = ".apot.pro"
+    SESSION_COOKIE_DOMAIN = ".apotb.shop"
+    CSRF_COOKIE_DOMAIN = ".apotb.shop"
 
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
