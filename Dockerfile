@@ -21,8 +21,10 @@ RUN poetry config virtualenvs.create false
 RUN poetry install --only main --no-root --no-interaction
 COPY . /code
 
+RUN chmod +x /code/entrypoint.sh
+
 ENV SECRET_KEY "9PPkF97oL0aG4fFHN2GYmGSEAkTbaTRHKvK9GgCk6U6dILWFV3"
 
 EXPOSE 8000
 
-CMD ["gunicorn","--bind",":8000","--workers","2","--worker-class","uvicorn.workers.UvicornWorker","config.asgi"]
+ENTRYPOINT ["/code/entrypoint.sh"]
