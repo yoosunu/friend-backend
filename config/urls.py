@@ -22,6 +22,7 @@ from django.conf import settings
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("", include("common.urls")),
     path("api/v1/chats/", include("chats.urls")),
     path("api/v1/items/", include("items.urls")),
     path("api/v1/wishlists/", include("wishlists.urls")),
