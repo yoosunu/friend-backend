@@ -17,6 +17,7 @@ class Subs(CommonModel):
     endpoint = models.TextField(
         null=True,
         blank=True,
+        unique=True,
     )
     keys_auth = models.TextField(
         null=True,
@@ -29,3 +30,6 @@ class Subs(CommonModel):
 
     def __str__(self):
         return self.endpoint or "No Endpoint"
+
+    class Meta:
+        verbose_name_plural = "Subs"
