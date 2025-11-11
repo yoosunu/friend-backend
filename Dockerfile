@@ -27,4 +27,4 @@ ENV SECRET_KEY "9PPkF97oL0aG4fFHN2GYmGSEAkTbaTRHKvK9GgCk6U6dILWFV3"
 
 EXPOSE 8000
 
-CMD ["sh", "/code/entrypoint.sh"]
+ENTRYPOINT ["/code/entrypoint.sh"]
