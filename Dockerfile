@@ -15,10 +15,20 @@ RUN mkdir -p /code
 
 WORKDIR /code
 
+RUN pip install --upgrade pip
 RUN pip install poetry
+
 COPY pyproject.toml poetry.lock /code/
+
 RUN poetry config virtualenvs.create false
-RUN poetry install --only main --no-root --no-interaction
+
+RUN poetry config installer.timeout 300
+RUN poetry config installer.max-retries 10
+
+RUN pip install numpy --no-cache-dir
+
+RUN poetry install --only main --no-root --no-interaction   
+
 COPY . /code
 
 RUN chmod +x /code/entrypoint.sh
