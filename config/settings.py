@@ -57,6 +57,8 @@ THIRD_PARTY_APPS = [
     "corsheaders",
     # "django_celery_results",
     # "django_celery_beat",
+    "cloudinary",
+    "cloudinary_storage",
 ]
 
 CUSTOM_APPS = [
@@ -184,9 +186,17 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "users.User"
 
+# MEDIA
+
 MEDIA_ROOT = "uploads"
 
 MEDIA_URL = "user_uploads/"
+
+CLOUDINARY_URL = env("CLOUDINARY_URL")
+
+DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
+STATICFILES_STORAGE = "cloudinary_storage.storage.StaticHashedCloudinaryStorage"
+
 PAGE_SIZE = 3
 
 REST_FRAMEWORK = {

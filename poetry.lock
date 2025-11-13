@@ -643,12 +643,13 @@ testing = ["pytest (>=7.2.1)", "pytest-cov (>=4.0.0)", "tox (>=4.4.3)"]
 
 [[package]]
 name = "cloudinary"
-version = "1.41.0"
+version = "1.44.1"
 description = "Python and Django SDK for Cloudinary"
 optional = false
 python-versions = "*"
 files = [
-    {file = "cloudinary-1.41.0.tar.gz", hash = "sha256:e189739a796a7d2ad15c19971741d33a9300816b16c0282b4b14ccf1dd2948c0"},
+    {file = "cloudinary-1.44.1-py3-none-any.whl", hash = "sha256:b4785031179a5ec7010f46665e5c8fad2cae022c18405546f01d257e02f78b1c"},
+    {file = "cloudinary-1.44.1.tar.gz", hash = "sha256:62d4374b79d5476de2a86cb6a1da709a5429e02aef474bfc5d99f3e38a1a62ff"},
 ]
 
 [package.dependencies]
@@ -657,7 +658,7 @@ six = "*"
 urllib3 = ">=1.26.5"
 
 [package.extras]
-dev = ["tox"]
+dev = ["pytest", "pytest (==4.6)", "tox"]
 
 [[package]]
 name = "colorama"
@@ -2323,4 +2324,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "d64ab999a81be7099d69b3ee07360b6dc69927f25504b071e9759fda9cce6bc4"
+content-hash = "80e780de0b4b2d65c756fbe8edadb6562fda9c5b61655f81d1a8b983f8b34cc7"
