@@ -31,6 +31,7 @@ pyjwt = "^2.10.1"
 pywebpush = "^2.0.3"
 cryptography = "^45.0.4"
 cloudinary = "^1.44.1"
+chromadb = "^1.5.2"
 
 
 [build-system]

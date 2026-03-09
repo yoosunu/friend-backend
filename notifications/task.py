@@ -1,3 +1,5 @@
+# for celery, not used
+
 import requests
 from bs4 import BeautifulSoup
 from celery import shared_task

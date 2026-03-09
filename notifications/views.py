@@ -60,10 +60,10 @@ def create_multiple_notifications(notifications):
             except Exception as e:
                 print("💥 Push Error:", e)
 
-    # delete old things over 50
+    # delete old things over 500
     notis = Notification.objects.order_by("-created_at")
-    if notis.count() > 50:
-        ids_to_delete = notis[50:].values_list("id", flat=True)
+    if notis.count() > 500:
+        ids_to_delete = notis[500:].values_list("id", flat=True)
         Notification.objects.filter(id__in=ids_to_delete).delete()
 
 

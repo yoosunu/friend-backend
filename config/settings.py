@@ -338,3 +338,6 @@ if not DEBUG:
             },
         },
     }
+
+# about chroma
+# CHROMA_DB_PATH = os.path.join(BASE_DIR, "chroma_data")
