@@ -201,6 +201,7 @@ PAGE_SIZE = 3
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
+        # these two should be remove when debug cause of csrf
         "rest_framework.authentication.SessionAuthentication",
         "config.authentication.JWTAuthentication",
     ],
@@ -339,5 +340,5 @@ if not DEBUG:
         },
     }
 
-# about chroma
-# CHROMA_DB_PATH = os.path.join(BASE_DIR, "chroma_data")
+# chroma
+CHROMA_DB_PATH = os.path.join(BASE_DIR, "chroma_data")
