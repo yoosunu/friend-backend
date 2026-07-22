@@ -74,6 +74,7 @@ CUSTOM_APPS = [
     "todos.apps.TodosConfig",
     "notifications.apps.NotificationsConfig",
     "subscriptions.apps.SubscriptionsConfig",
+    "simcheong.apps.SimcheongConfig",
 ]
 
 SYSTEM_APPS = [
