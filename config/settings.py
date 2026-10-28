@@ -37,11 +37,14 @@ VAPID_PRIVATE_KEY = env("VAPID_PRIVATE_KEY")
 DEBUG = False
 # DEBUG = True
 
+# 서비스 도메인. 도메인이 바뀌면 Render 환경변수 BASE_DOMAIN만 바꾸면 된다.
+BASE_DOMAIN = env("BASE_DOMAIN", default="apotb.shop")
+
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
     "10.0.2.2",
-    "backend.apotb.shop",
+    f"backend.{BASE_DOMAIN}",
 ]
 
 RENDER_EXTERNAL_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
@@ -222,18 +225,14 @@ if DEBUG:
     ]
 else:
     CORS_ALLOWED_ORIGINS = [
-        "https://apotb.shop",
-        "https://www.apotb.shop",
-        "https://backend.apotb.shop",
+        f"https://{BASE_DOMAIN}",
+        f"https://www.{BASE_DOMAIN}",
+        f"https://backend.{BASE_DOMAIN}",
     ]
-    CSRF_TRUSTED_ORIGINS = [
-        "https://apotb.shop",
-        "https://www.apotb.shop",
-        "https://backend.apotb.shop",
-    ]
+    CSRF_TRUSTED_ORIGINS = list(CORS_ALLOWED_ORIGINS)
 
-    SESSION_COOKIE_DOMAIN = ".apotb.shop"
-    CSRF_COOKIE_DOMAIN = ".apotb.shop"
+    SESSION_COOKIE_DOMAIN = f".{BASE_DOMAIN}"
+    CSRF_COOKIE_DOMAIN = f".{BASE_DOMAIN}"
 
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
