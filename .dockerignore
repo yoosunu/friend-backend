@@ -4,3 +4,10 @@ fly.toml
 
 temp
 
+.env
+db.sqlite3
+**/__pycache__
+*.pyc
+.github/
+.vscode/
+.DS_Store
