@@ -5,31 +5,25 @@ FROM python:${PYTHON_VERSION}
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-# install psycopg2 dependencies.
-RUN apt-get update && apt-get install -y \
-    libpq-dev \
-    gcc \
-    && rm -rf /var/lib/apt/lists/*
+# psycopg2-binary 등 모든 의존성이 wheel로 제공되므로 gcc/libpq-dev는 필요 없다.
 
 RUN mkdir -p /code
 
 WORKDIR /code
 
-RUN pip install --upgrade pip
-RUN pip install numpy --no-cache-dir
-RUN pip install poetry
+RUN pip install --no-cache-dir --upgrade pip poetry
 
 COPY pyproject.toml poetry.lock /code/
 
-RUN poetry config virtualenvs.create false
-
-RUN poetry install --only main --no-root --no-interaction   
+RUN poetry config virtualenvs.create false \
+    && poetry install --only main --no-root --no-interaction \
+    && rm -rf /root/.cache
 
 COPY . /code
 
 RUN chmod +x /code/entrypoint.sh
 
-ENV SECRET_KEY "9PPkF97oL0aG4fFHN2GYmGSEAkTbaTRHKvK9GgCk6U6dILWFV3"
+# SECRET_KEY 등 비밀값은 Render 환경변수에서 주입된다.
 
 EXPOSE 8000
 
